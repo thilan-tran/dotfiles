@@ -69,7 +69,7 @@
   " Plug 'tpope/vim-vinegar'
   " Plug 'tpope/vim-eunuch'
 
-  Plug 'Lenovsky/nuake'
+  Plug 'tpope/vim-fugitive'
   Plug 'bkad/CamelCaseMotion'
   Plug 'kkoenig/wimproved.vim'
 
@@ -387,6 +387,7 @@ let g:lightline.component = {
       \  'time': "%{strftime('%I.%M')}" }
 let g:lightline.component_function = {
       \ 'cocstatus': 'coc#status',
+      \ 'gitbranch': 'fugitive#head'
       \ }
 let g:lightline.component_expand = {
       \  'linter_checking': 'lightline#ale#checking',
@@ -400,8 +401,9 @@ let g:lightline.component_expand = {
       \ }
 let g:lightline.active = { 'right': [ ['lineinfo'], ['percent'],
       \                               ['cocErrors', 'cocWarnings', 'cocOK'],
-      \                               ['fileformat', 'fileencoding', 'filetype', 'time'] ]}
-      " \                               ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok'],
+      \                               ['fileformat', 'fileencoding', 'filetype', 'time'] ],
+      \                    'left': [ ['mode', 'paste'],
+      \                              ['gitbranch', 'readonly', 'filename', 'modified'] ] }
 let g:lightline.component_type = {
       \     'linter_checking': 'left',
       \     'linter_warnings': 'warning',
