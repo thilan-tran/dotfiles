@@ -1,0 +1,44 @@
+extends c
+
+snippet #ifndef "#ifndef ... #define ... #endif" bA
+#ifndef ${1/([A-Za-z0-9_]+).*/$1/}_INCLUDED
+#define ${1:SYMBOL}_INCLUDED
+
+${VISUAL}$0
+
+#endif // $1_INCLUDED
+endsnippet
+
+snippet cou "std::cout" bA
+std::cout << "${1:/* text */}" << ${2}std::endl;
+$0
+endsnippet
+
+snippet cer "std::cerr" bA
+std::cerr << "${1:/* text */}" << ${2}std::endl;
+$0
+endsnippet
+
+snippet map "std::map"
+std::map<${1:key}, ${2:value}> m$0;
+endsnippet
+
+snippet set "std::set"
+std::set<${1:ItemType}> s$0;
+endsnippet
+
+snippet vec "std::vector"
+std::vector<${1:ItemType}> v$0;
+endsnippet
+
+snippet class "class" bA
+class ${1:`!p snip.rv = snip.basename or "name"`}
+{
+public:
+	${1/(\w+).*/$1/} (${2:/* arguments */});
+	virtual ~${1/(\w+).*/$1/} ();
+
+private:
+	${0:/* data */}
+};
+endsnippet
