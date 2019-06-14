@@ -1,1 +1,26 @@
-../../AppData/Local/nvim/coc-settings.json
+{
+  "coc.preferences.formatOnSaveFiletypes": ["css", "html", "javascript", "typescript", "typescriptreact", "json", "javascriptreact"],
+  "coc.preferences.extensionUpdateCheck": "never",
+  "suggest.echodocSupport": true,
+  "suggest.maxCompleteItemCount": 20,
+  "diagnostic.errorSign": "~X",
+  "diagnostic.infoSign": "~!",
+  "diagnostic.warningSign": "~W",
+
+  "languageserver":{
+   "clangd": {
+     "command": "clangd",
+     "rootPatterns": ["compile_flags.txt", "compile_commands.json", ".vim/", ".git/", ".hg/"],
+     "filetypes": ["c", "cpp", "objc", "objcpp"]
+   }
+  },
+
+  "prettier.singleQuote": true,
+  "prettier.printWidth": 80,
+
+  "eslint.filetypes": ["javascript", "typescript", "typescriptreact", "javascriptreact"],
+  "eslint.options": {"configFile": "C:/Users/qwert/OneDrive/Documents/My Code/.eslintrc"},
+  "tslint.jsEnable": true,
+
+  "html.format.enable": true
+}
