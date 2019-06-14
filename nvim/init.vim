@@ -921,10 +921,10 @@ augroup END
 
 noremap <silent> <leader>te
   \ :vspl<CR>
-  \ :lcd! ~/OneDrive/Documents/My\ Code\<CR>
   \ :terminal bash<CR>
   \ :set nonumber<CR>
   \ :file bash<CR>i
+  " \ :lcd! ~/OneDrive/Documents/My\ Code\<CR>
 tnoremap <silent> <leader>s <C-\><C-n>:Startify<CR>
 
 tnoremap <leader>[ <C-\><C-n>
