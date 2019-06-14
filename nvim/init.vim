@@ -239,7 +239,7 @@ call plug#end()
   set pumheight=7
   set complete-=i
   set complete-=t
-  set completeopt=menuone,noselect
+  set completeopt=menuone,noinsert
   setlocal shortmess+=c
 
   " format options
@@ -343,11 +343,11 @@ call plug#end()
     autocmd BufRead *.todo :set fdm=marker
 
     autocmd BufRead *.todo :syn match todoHeading "^[A-Z].*"
-    autocmd BufRead *.todo :syn match todoDone "\[x\].*"
     autocmd BufRead *.todo :syn match todoTag "\v\+\w*"
     autocmd BufRead *.todo :syn match todoDates "\v\] \zs.*\ze \|"
     autocmd BufRead *.todo :syn match todoNotes "\v^\s*\-"
     autocmd BufRead *.todo :syn match todoBrackets "\V\^[ ]"
+    autocmd BufRead *.todo :syn match todoDone ".*\[x\].*"
     autocmd BufRead *.todo :syn match todoHigh "\v\(A\)"
     autocmd BufRead *.todo :syn match todoMed "\v\(B\)"
     autocmd BufRead *.todo :syn match todoLow "\v\(C\)"
@@ -380,7 +380,7 @@ autocmd! FileType fzf
 autocmd  FileType fzf set laststatus=0 noshowmode noruler
   \| autocmd BufLeave <buffer> set laststatus=2 noshowmode ruler
 " let $FZF_DEFAULT_COMMAND = 'ag -g "" --ignore-dir EAGLE --ignore-dir Libraries --ignore-dir E96C --ignore node_modules*'
-let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore-vcs --hidden'
+let $FZF_DEFAULT_COMMAND = 'rg --files'
 
 let g:lightline = { 'colorscheme': 'onedark' }
 let g:lightline.component = {
@@ -864,7 +864,7 @@ nmap <silent> <leader>j <Plug>(coc-diagnostic-next)
 cabbrev vh vert help
 
 " Bash command
-cabbrev !b !bash -c "
+cabbrev !b !bash -c " "<Left><Left>
 
 " mimic vinegar
 " nnoremap <silent> - :Explore<CR>
@@ -960,8 +960,8 @@ au BufEnter * if &buftype == 'terminal' | :startinsert | endif
 "       \ coc#refresh()
 " inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-" inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 " inoremap <M-CR> <CR>
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
  " use <c-space>for trigger completion
 imap <c-space> coc#refresh()
