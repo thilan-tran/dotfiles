@@ -2,6 +2,6 @@
 set columns=80
 GuiPopupmenu 0
 GuiTabline 0
-GuiFont Iosevka:h19
+GuiFont Iosevka:h17
 cd C:/Users/qwert/OneDrive/Documents/My\ Code
-call GuiWindowFullScreen(1)
+" call GuiWindowFullScreen(1)

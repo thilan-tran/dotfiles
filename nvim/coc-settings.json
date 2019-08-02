@@ -1,12 +1,14 @@
 {
   "coc.preferences.formatOnSaveFiletypes": ["css", "html", "javascript", "typescript", "typescriptreact", "json", "javascriptreact"],
   "coc.preferences.extensionUpdateCheck": "never",
+  "coc.preferences.messageLevel": "error",
+
   "suggest.echodocSupport": true,
   "suggest.maxCompleteItemCount": 20,
   "suggest.noselect": false,
-  "diagnostic.errorSign": "~X",
-  "diagnostic.infoSign": "~!",
-  "diagnostic.warningSign": "~W",
+  "diagnostic.errorSign": "_X",
+  "diagnostic.infoSign": "_!",
+  "diagnostic.warningSign": "_W",
 
   "languageserver":{
    "clangd": {
@@ -16,12 +18,17 @@
    }
   },
 
-  "prettier.singleQuote": true,
+  "prettier.arrowParens": "always",
   "prettier.printWidth": 80,
+  "prettier.proseWrap": "preserve",
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "none",
 
-  "eslint.filetypes": ["javascript", "typescript", "typescriptreact", "javascriptreact"],
-  "eslint.options": {"configFile": "C:/Users/qwert/OneDrive/Documents/My Code/.eslintrc"},
-  "tslint.jsEnable": true,
+  "javascript.suggestionActions.enabled": false,
 
+  "html.filetypes": [
+    "javascript",
+    "html"
+  ],
   "html.format.enable": true
 }

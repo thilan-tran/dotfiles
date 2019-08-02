@@ -16,6 +16,7 @@
     autocmd GUIEnter * simalt ~x
     autocmd GUIEnter * WToggleClean
     autocmd GUIEnter * call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0)
+    " autocmd VIMEnter * :Goyo
   augroup END
 
   set rtp+=~/.config/nvim/
@@ -25,29 +26,32 @@
 
   call plug#begin('~/vimfiles/plugged')
 
+  " colors
   Plug 'chriskempson/base16-vim'
-  Plug 'kaicataldo/material.vim'
   Plug 'joshdick/onedark.vim'
-  Plug 'drewtempelmeyer/palenight.vim'
-  Plug 'arcticicestudio/nord-vim'
 
+  " syntax highlighting
   Plug 'octol/vim-cpp-enhanced-highlight'
   Plug 'justinmk/vim-syntax-extra'
   Plug 'pangloss/vim-javascript'
+  Plug 'mxw/vim-jsx'
   Plug 'kh3phr3n/python-syntax'
 
+  " modeline and startup
   Plug 'itchyny/lightline.vim'
   Plug 'mengelbrecht/lightline-bufferline'
   Plug 'mhinz/vim-startify'
 
-  Plug 'junegunn/rainbow_parentheses.vim'
+  " goyo
   Plug 'junegunn/goyo.vim'
   " Plug 'junegunn/limelight.vim'
 
+  " markdown
   Plug 'plasticboy/vim-markdown'
-  Plug 'jkramer/vim-checkbox'
   Plug 'dhruvasagar/vim-table-mode'
+  Plug 'jkramer/vim-checkbox'
 
+  " autocompletion
   Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
   Plug 'sirver/ultisnips'
   Plug 'rhysd/vim-clang-format'
@@ -57,19 +61,24 @@
   " Plug 'w0rp/ale'
   " Plug 'maximbaz/lightline-ale'
 
+  " FZF and tags
   Plug 'junegunn/fzf'
   Plug 'junegunn/fzf.vim'
   Plug 'liuchengxu/vista.vim'
 
-  Plug 'tpope/vim-commentary'
-  Plug 'tpope/vim-surround'
-
+  " directory browser
   Plug 'justinmk/vim-dirvish'
   " Plug 'd86leader/vim-netrwild'
   " Plug 'tpope/vim-vinegar'
   " Plug 'tpope/vim-eunuch'
 
+  " git
   Plug 'tpope/vim-fugitive'
+  Plug 'airblade/vim-gitgutter'
+
+  " other utilities
+  Plug 'tpope/vim-commentary'
+  Plug 'tpope/vim-surround'
   Plug 'bkad/CamelCaseMotion'
   Plug 'kkoenig/wimproved.vim'
 
@@ -81,93 +90,93 @@ call plug#end()
 " Custom Highlighting {{{
 
   augroup my-highlighting
-    au!
+    autocmd!
     " misc
-    au ColorScheme * highlight Comment gui=italic
-    au ColorScheme * highlight SpellLocal guifg=NONE
-    au ColorScheme * highlight SpellRare guifg=NONE
-    au ColorScheme * highlight SpellCap guifg=NONE
-    au ColorScheme * highlight MatchParen gui=bold
+    autocmd ColorScheme * highlight Comment cterm=italic gui=italic
+    autocmd ColorScheme * highlight MatchParen cterm=bold gui=bold
+    autocmd ColorScheme * highlight SpellLocal ctermfg=none guifg=none
+    autocmd ColorScheme * highlight SpellRare ctermfg=none guifg=none
+    autocmd ColorScheme * highlight SpellCap ctermfg=none guifg=none
     " yellow
-    au ColorScheme * highlight cIncluded guifg=#E5C07B
-    au ColorScheme * highlight cBraces guifg=#E5C07B
-    au ColorScheme * highlight cDelimiter guifg=#E5C07B
-    au ColorScheme * highlight TagbarHighlight guifg=#E5C07B
-    " dark yellow
-    au ColorScheme * highlight CocWarningHighlight guifg=#D19A66
-    au ColorScheme * highlight CocWarningFloat guifg=#D19A66
-    au ColorScheme * highlight CocWarningSign guifg=#D19A66
+    autocmd ColorScheme * highlight cIncluded ctermfg=yellow guifg=#E5C07B
+    autocmd ColorScheme * highlight cBraces ctermfg=yellow guifg=#E5C07B
+    autocmd ColorScheme * highlight cDelimiter ctermfg=yellow guifg=#E5C07B
+    autocmd ColorScheme * highlight TagbarHighlight ctermfg=yellow guifg=#E5C07B
+    autocmd ColorScheme * highlight CocWarningFloat ctermfg=yellow guifg=#E5C07B
+    autocmd ColorScheme * highlight CocWarningSign ctermfg=yellow guifg=#E5C07B
+    autocmd ColorScheme * highlight CocWarningHighlight cterm=none ctermfg=none gui=none guifg=none
     " blue
-    au ColorScheme * highlight cppStructure guifg=#61AFEF
-    au ColorScheme * highlight cCustomClassName guifg=#61AFEF
-    au ColorScheme * highlight cCustomStructName guifg=#61AFEF
-    au ColorScheme * highlight cCustomStruct guifg=#61AFEF
-    au ColorScheme * highlight cCustomClass guifg=#61AFEF
-    au ColorScheme * highlight StartifyFile guifg=#61AFEF
+    autocmd ColorScheme * highlight cppStructure ctermfg=blue guifg=#61AFEF
+    autocmd ColorScheme * highlight cCustomClassName ctermfg=blue guifg=#61AFEF
+    autocmd ColorScheme * highlight cCustomStructName ctermfg=blue guifg=#61AFEF
+    autocmd ColorScheme * highlight cCustomStruct ctermfg=blue guifg=#61AFEF
+    autocmd ColorScheme * highlight cCustomClass ctermfg=blue guifg=#61AFEF
+    autocmd ColorScheme * highlight StartifyFile ctermfg=blue guifg=#61AFEF
     " white
-    au ColorScheme * highlight Cursor guibg=#ABB2BF
-    au ColorScheme * highlight cUserLabel guifg=#ABB2BF
-    au ColorScheme * highlight TagbarPseudoID guifg=#ABB2BF
-    au ColorScheme * highlight StartifyPath guifg=#ABB2BF
+    autocmd ColorScheme * highlight Cursor ctermfg=white guibg=#ABB2BF
+    autocmd ColorScheme * highlight cUserLabel ctermfg=white guifg=#ABB2BF
+    autocmd ColorScheme * highlight TagbarPseudoID ctermfg=white guifg=#ABB2BF
+    autocmd ColorScheme * highlight StartifyPath ctermfg=grey guifg=#ABB2BF
     " cyan
-    au ColorScheme * highlight cppType guifg=#56B6C2
-    au ColorScheme * highlight cppSTLtype guifg=#56B6C2
-    au ColorScheme * highlight cType guifg=#56B6C2
-    au ColorScheme * highlight cppBoolean guifg=#56B6C2
-    au ColorScheme * highlight cCustomClassKey guifg=#56B6C2
-    au ColorScheme * highlight cStructure guifg=#56B6C2
+    autocmd ColorScheme * highlight cppType ctermfg=cyan guifg=#56B6C2
+    autocmd ColorScheme * highlight cppSTLtype ctermfg=cyan guifg=#56B6C2
+    autocmd ColorScheme * highlight cType ctermfg=cyan guifg=#56B6C2
+    autocmd ColorScheme * highlight cppBoolean ctermfg=cyan guifg=#56B6C2
+    autocmd ColorScheme * highlight cCustomClassKey ctermfg=cyan guifg=#56B6C2
+    autocmd ColorScheme * highlight cStructure ctermfg=cyan guifg=#56B6C2
     " red
-    au ColorScheme * highlight cCustomScope guifg=#E06C75
-    au ColorScheme * highlight cOperator guifg=#E06C75
-    au ColorScheme * highlight cStorageClass guifg=#E06C75
-    au ColorScheme * highlight cCustomAccessKey guifg=#E06C75
-    au ColorScheme * highlight TagbarAccessPrivate guifg=#E06C75
-    au ColorScheme * highlight TagbarVisibilityPrivate guifg=#E06C75
-    au ColorScheme * highlight pythonExtraOperator guifg=#E06C75
-    au ColorScheme * highlight CocErrorHighlight guifg=#E06C75
-    au ColorScheme * highlight CocErrorFloat guifg=#E06C75
-    au ColorScheme * highlight CocErrorSign guifg=#E06C75
-    au ColorScheme * highlight SpellBad guifg=#E06C75
+    autocmd ColorScheme * highlight cCustomScope ctermfg=red guifg=#E06C75
+    autocmd ColorScheme * highlight cOperator ctermfg=red guifg=#E06C75
+    autocmd ColorScheme * highlight cStorageClass ctermfg=red guifg=#E06C75
+    autocmd ColorScheme * highlight cCustomAccessKey ctermfg=red guifg=#E06C75
+    autocmd ColorScheme * highlight TagbarAccessPrivate ctermfg=red guifg=#E06C75
+    autocmd ColorScheme * highlight TagbarVisibilityPrivate ctermfg=red guifg=#E06C75
+    autocmd ColorScheme * highlight pythonExtraOperator ctermfg=red guifg=#E06C75
+    autocmd ColorScheme * highlight CocErrorFloat ctermfg=red guifg=#E06C75
+    autocmd ColorScheme * highlight CocErrorSign ctermfg=red guifg=#E06C75
+    autocmd ColorScheme * highlight SpellBad ctermfg=red guifg=#E06C75
+    autocmd ColorScheme * highlight CocErrorHighlight cterm=none ctermfg=none gui=none guifg=none
     " green
-    au ColorScheme * highlight cCustomFunc guifg=#98C379
-    au ColorScheme * highlight cUserFunction guifg=#98C379
-    au ColorScheme * highlight cppSTLfunction guifg=#98C379
-    au ColorScheme * highlight TagbarAccessPublic guifg=#98C379
-    au ColorScheme * highlight TagbarVisibilityPublic guifg=#98C379
+    autocmd ColorScheme * highlight cCustomFunc ctermfg=green guifg=#98C379
+    autocmd ColorScheme * highlight cUserFunction ctermfg=green guifg=#98C379
+    autocmd ColorScheme * highlight cppSTLfunction ctermfg=green guifg=#98C379
+    autocmd ColorScheme * highlight TagbarAccessPublic ctermfg=green guifg=#98C379
+    autocmd ColorScheme * highlight TagbarVisibilityPublic ctermfg=green guifg=#98C379
     " grey
-    au ColorScheme * highlight doxygenBOther guifg=#5C6370
+    autocmd ColorScheme * highlight doxygenBOther ctermfg=grey guifg=#5C6370
+    autocmd ColorScheme * highlight GitGutterAdd ctermfg=grey guifg=#5C6370
+    autocmd ColorScheme * highlight GitGutterChange ctermfg=grey guifg=#5C6370
+    autocmd ColorScheme * highlight GitGutterDelete ctermfg=grey guifg=#5C6370
     " reset
-    au ColorScheme * highlight cDelimiter guifg=NONE
-    au ColorScheme * highlight cBraces guifg=NONE
+    autocmd ColorScheme * highlight cDelimiter ctermfg=none guifg=none
+    autocmd ColorScheme * highlight cBraces ctermfg=none guifg=none
 
     " markdown
-    au ColorScheme * highlight htmlItalic gui=italic, guifg=#E5C07B
-    au ColorScheme * highlight htmlBold gui=bold, guifg=#C678DD
-    au ColorScheme * highlight htmlH1 gui=bold, guifg=#61AFEF
+    autocmd ColorScheme * highlight htmlItalic cterm=italic ctermfg=yellow gui=italic guifg=#E5C07B
+    autocmd ColorScheme * highlight htmlBold cterm=bold ctermfg=magenta gui=bold guifg=#C678DD
+    autocmd ColorScheme * highlight htmlH1 cterm=bold ctermfg=blue gui=bold guifg=#61AFEF
 
     " todo
-    autocmd ColorScheme * :hi todoHeading gui=bold guifg=#61AFEF
-    autocmd ColorScheme * :hi todoTag guifg=#E06C75
-    autocmd ColorScheme * :hi todoDates gui=italic guifg=#E5C07B
-    autocmd ColorScheme * :hi todoNotes gui=bold guifg=#E06C75
-    autocmd ColorScheme * :hi todoHigh gui=bold guifg=#E06C75
-    autocmd ColorScheme * :hi todoMed guifg=#56B6C2
-    autocmd ColorScheme * :hi todoLow guifg=#98C379
+    autocmd ColorScheme * :hi todoTag ctermfg=red guifg=#E06C75
+    autocmd ColorScheme * :hi todoHigh cterm=bold ctermfg=red gui=bold guifg=#E06C75
+    autocmd ColorScheme * :hi todoNotes cterm=bold ctermfg=red gui=bold guifg=#E06C75
+    autocmd ColorScheme * :hi todoDates cterm=italic ctermfg=yellow gui=italic guifg=#E5C07B
+    autocmd ColorScheme * :hi todoHeading cterm=bold ctermfg=blue gui=bold guifg=#61AFEF
+    autocmd ColorScheme * :hi todoMed ctermfg=cyan guifg=#56B6C2
+    autocmd ColorScheme * :hi todoLow ctermfg=green guifg=#98C379
     autocmd ColorScheme * :hi def link todoDone Comment
-    " autocmd ColorScheme * :hi todoBrackets gui=bold guifg=#98C379
+    " autocmd ColorScheme * :hi todoBrackets cterm=bold ctermfg=green gui=bold guifg=#98C379
 
   augroup end
 
 " }}}
 
   set t_Co=16
-  highlight Normal ctermbg=NONE
-  highlight nonText ctermbg=NONE
+  highlight Normal ctermbg=none
+  highlight nonText ctermbg=none
   if (has("termguicolors"))
     set termguicolors
   endif
-
-" let g:load_doxygen_syntax=1
 
   syntax on
   set background=dark
@@ -190,10 +199,12 @@ call plug#end()
 
   " }}}
 
-  set nocompatible
+  runtime macros/matchit.vim
+
   set number
+  set cursorline
   set ruler
-  set signcolumn=no
+  set signcolumn=yes
 
   set noshowmode
   set laststatus=2
@@ -235,12 +246,13 @@ call plug#end()
   set ff=unix
   set fileformats=unix,dos
   set wildignore=*~,*.DAT,ntuser*,NTUSER*,_.sw*,*.json,node_modules/
+
   " completion popup
   set pumheight=7
   set complete-=i
   set complete-=t
-  set completeopt=menuone,noinsert
-  setlocal shortmess+=c
+  set completeopt=menuone,noselect
+  set shortmess+=c
 
   " format options
   set fo+=t
@@ -259,6 +271,11 @@ call plug#end()
 " }}}
 " Filetype Settings {{{2
 
+  augroup secure_modeline_conflict_workaround
+    autocmd!
+    autocmd FileType help setlocal nomodeline
+  augroup END
+
   " c, cpp, python, javascript
   "fix :: indent in c
   augroup Coding
@@ -267,6 +284,7 @@ call plug#end()
     autocmd FileType c,cpp ClangFormatAutoEnable
     autocmd FileType c,cpp,python,javascript setlocal nofoldenable
     autocmd FileType c,cpp,python,javascript setlocal signcolumn=yes
+    autocmd FileType javascript setlocal commentstring=/*\ %s\ */
   augroup END
 
   " language highlighting options
@@ -316,10 +334,9 @@ call plug#end()
     autocmd BufWritePre * call StripWhitespace()
   augroup END
 
+  " todo / tasks
   augroup Todo
     autocmd!
-
-    " todo / tasks
 
     " sort by tag
     autocmd BufRead *.todo nmap <buffer> <silent> <C-s>
@@ -329,6 +346,8 @@ call plug#end()
 
     " auto start lines with [ ] or -
     autocmd BufRead *.todo inoremap <buffer> <CR> <CR>[ ]<TAB>
+    autocmd BufRead *.todo inoremap <buffer> <S-CR> <CR><TAB>-<TAB>
+
     autocmd BufRead *.todo nnoremap <buffer> o o[ ]<TAB>
     autocmd BufRead *.todo nnoremap <buffer> <S-o> o<TAB>-<TAB>
     autocmd BufRead *.todo nnoremap <buffer> <C-o> o
@@ -372,13 +391,15 @@ let g:clang_format#style_options = {
  \ "AlignConsecutiveAssignments" : "true",
  \ "ReflowComments" : "true" }
 
-let g:dirvish_mode = ':sort | sort ,^.*[^\\]$, r | silent keeppatterns g/\vnode_modules|\\\.[^\\]+/d _'
+" let g:dirvish_mode = ':sort | sort ,^.*[^\\]$, r | silent keeppatterns g/\vnode_modules|\\\.[^\\]+/d _'
+let g:dirvish_mode = ':sort | sort /^.*[^\\]$/ r'
 
 " let g:fzf_layout = { 'left': '~30%' }
 let g:fzf_layout = { 'window': '-tabnew' }
 autocmd! FileType fzf
 autocmd  FileType fzf set laststatus=0 noshowmode noruler
   \| autocmd BufLeave <buffer> set laststatus=2 noshowmode ruler
+
 " let $FZF_DEFAULT_COMMAND = 'ag -g "" --ignore-dir EAGLE --ignore-dir Libraries --ignore-dir E96C --ignore node_modules*'
 let $FZF_DEFAULT_COMMAND = 'rg --files'
 
@@ -399,11 +420,6 @@ let g:lightline.component_expand = {
       \  'cocWarnings': 'GetCocWarnings',
       \  'cocOK': 'GetCocOK'
       \ }
-let g:lightline.active = { 'right': [ ['lineinfo'], ['percent'],
-      \                               ['cocErrors', 'cocWarnings', 'cocOK'],
-      \                               ['fileformat', 'fileencoding', 'filetype', 'time'] ],
-      \                    'left': [ ['mode', 'paste'],
-      \                              ['gitbranch', 'readonly', 'filename', 'modified'] ] }
 let g:lightline.component_type = {
       \     'linter_checking': 'left',
       \     'linter_warnings': 'warning',
@@ -413,10 +429,19 @@ let g:lightline.component_type = {
       \     'cocWarnings': 'warning',
       \     'cocOK': 'left'
       \ }
-let g:lightline#ale#indicator_checking = '...'
-let g:lightline#ale#indicator_warnings = ''
-let g:lightline#ale#indicator_errors = ''
-let g:lightline#ale#indicator_ok = 'ok'
+
+" detailed statusline
+" let g:lightline.active = { 'right': [ ['lineinfo'], ['percent'],
+"       \                               ['cocErrors', 'cocWarnings', 'cocOK'],
+"       \                               ['fileformat', 'fileencoding', 'filetype', 'time'] ],
+"       \                    'left': [ ['mode', 'paste'],
+"       \                              ['gitbranch', 'readonly', 'filename', 'modified'] ] }
+
+" minimal statusline
+let g:lightline.active = {
+      \  'right': [ ['cocErrors', 'cocWarnings', 'cocOK'], ['filetype', 'percent'] ],
+      \  'left':  [ ['mode', 'paste'],
+      \             ['readonly', 'filename', 'modified'] ] }
 autocmd User CocDiagnosticChange call lightline#update()
 
 " bufferline
@@ -424,8 +449,15 @@ set showtabline=2
 let g:lightline.tabline          = {'left': [['buffers']]}
 let g:lightline#bufferline#filename_modifier = ':t'
 
-let g:goyo_width = 120
-let g:goyo_height = 300
+let g:goyo_width = '95%'
+let g:goyo_height = '95%'
+let g:goyo_linenr = 1
+" autocmd! User GoyoEnter Limelight
+" autocmd! User GoyoLeave Limelight!
+
+let g:gitgutter_sign_added = '\ +'
+let g:gitgutter_sign_modified = '\ ~'
+let g:gitgutter_sign_removed = '\ -'
 
 " let g:vim_markdown_conceal = 0
 let g:vim_markdown_toc_autofit = 1
@@ -449,6 +481,7 @@ let g:nuake_position = 'bottom'
 let g:nuake_size = 0.35
 
 let g:startify_enable_special = 0
+" let g:startify_use_env = 1
 let g:startify_relative_path = 1
 let g:startify_change_to_dir = 0
 let g:startify_padding_left = 3
@@ -456,8 +489,6 @@ let g:startify_session_dir = 'C:\Users\qwert\vimfiles\session'
 let g:startify_lists = [ { 'type': 'files' }, { 'type': 'sessions' }, { 'type': 'bookmarks' } ]
 let g:startify_bookmarks = [ {'c': '~\AppData\Local\nvim\init.vim'}, {'w': '~\OneDrive\Documents\Wiki\index.md'}, {'t': '~\OneDrive\Documents\Wiki\tasks.todo'} ]
 let g:startify_custom_header = [
-          \ ' ',
-          \ ' ',
           \ ' ',
           \ '                                             ',
           \ '                         __                  ',
@@ -470,7 +501,7 @@ let g:startify_custom_header = [
           \ ]
 
 let g:UltiSnipsSnippetDirectories = ['C:/Users/qwert/vimfiles/UltiSnips']
-let g:UltiSnipsExpandTrigger = "<C-u>"
+" let g:UltiSnipsExpandTrigger = "<C-u>"
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 let g:ulti_expand_or_jump_res = 0
@@ -707,6 +738,8 @@ let g:vista_echo_cursor = 0
 let mapleader = ";"
 let localleader = "\\"
 
+nnoremap <leader>so :source $MYVIMRC<CR>
+
 " Editing {{{3
 
 " wrap j and k
@@ -718,13 +751,21 @@ inoremap <S-CR> <C-o>A;
 inoremap <C-CR> <C-o>A;<CR>
 
 " auto close
+inoremap ' ''<Left>
+inoremap " ""<Left>
+inoremap ` ``<Left>
+
 inoremap ) ()
 inoremap ( ()<Left>
 inoremap (; ();<Left><Left>
 
+inoremap (<CR> (<CR>)<C-c>O
+
 inoremap ] []
 inoremap [ []<Left>
 inoremap [; [];<Left><Left>
+
+inoremap {<CR> {<CR>}<C-c>O
 
 inoremap } {}
 inoremap { {}<Left>
@@ -733,7 +774,7 @@ inoremap {; {};<Left><Left>
 inoremap {<CR> {<CR>}<C-c>O
 inoremap {;<CR> {<CR>};<C-c>O
 
-inoremap /* /*<Tab>*/<Left><Left>
+inoremap /* /*<Tab>*/<Left><Left><Left>
 
 " M-bracket for single
 inoremap ¨ (
@@ -748,6 +789,9 @@ inoremap <M-{> {
 inoremap <M-}> }
 inoremap <M-[> [
 inoremap <M-]> ]
+inoremap <M-'> '
+inoremap <M-"> "
+inoremap <M-`> `
 
 " stay in the Visual mode when using shift commands
 xnoremap < <gv
@@ -810,14 +854,14 @@ noremap <silent> <leader>s :Startify<CR>
 noremap <silent> <leader>rc :vspl $MYVIMRC<CR>
 noremap <silent> <leader>cc :vspl<CR> :CocConfig<CR>
 
-noremap <leader>; :FZF ~/OneDrive/Documents<CR>
-noremap <leader>e :20Vexplore<CR>
+noremap <silent> <leader>; :FZF ~/OneDrive/Documents<CR>
+noremap <silent> <leader>e :20Vexplore<CR>
 
 noremap <silent> <leader>w :silent w!<CR>
-noremap <leader>c :close<CR>
-noremap <leader>q :qa<CR>
-noremap <leader>x :e!<CR>
-noremap <leader>o <C-w>o
+noremap <silent> <leader>c :close<CR>
+noremap <silent> <leader>q :qa<CR>
+noremap <silent> <leader>x :e!<CR>
+noremap <silent> <leader>o <C-w>o
 
 " fix ;
 nnoremap , ;
@@ -825,18 +869,18 @@ nnoremap ;, ,
 
 noremap <silent> <leader>g :Goyo<CR>
 noremap <silent> <leader>t :Vista<CR>
-" noremap <silent> <leader>o :browse oldfiles<CR>
 
 " buffers
-nnoremap <leader>bn :enew<CR> :Explore<CR>
-nmap <leader>bs :split<CR><C-W><C-K>-
-nmap <leader>bv :vsplit<CR><C-W><C-H>-
-nnoremap <leader>bo :%bd!<CR>:e#<CR>
-nnoremap <leader>bc :bd<CR>
+nnoremap <silent> <leader>bn :enew<CR> :Explore<CR>
+nmap <silent> <leader>bs :split<CR><C-W><C-K>-
+nmap <silent> <leader>bv :vsplit<CR><C-W><C-H>-
+nnoremap <silent> <leader>bo :%bd!<CR>:e#<CR>
+nnoremap <silent> <leader>bc :bd<CR>
 " refresh buffer
 noremap <silent> <leader>re ma:edit<CR>`azAzz
 " buffer list
-noremap <leader><C-tab> :buffer<space><tab>
+" noremap <silent> <leader><C-tab> :buffer<space><tab>
+noremap <silent> <leader><C-tab> :Buffers<CR>
 
 " open tags in splits
 noremap <A-]> :vsplit<CR>g<C-]>
@@ -904,10 +948,12 @@ nnoremap <silent> <leader><space>p
 " autocompile pdf from markdown and open viewer
 augroup Markdown-Compilation
   autocmd!
+
   autocmd FileType markdown nmap <buffer> <silent> <C-S>
     \ :echo "Compiling pdf..."<CR>
     \ :StartAsync pandoc %:p --pdf-engine=xelatex --listings -o %:p:h/%:t:r.pdf<CR>
     " \ :silent !start /b pandoc %:p --pdf-engine=xelatex --listings -o %:p:h/%:t:r.pdf<CR>
+
   autocmd FileType markdown,pdf nnoremap <buffer> <silent> <leader>v :silent !start /b SumatraPDF -reuse-instance %:p:h/%:t:r.pdf<CR>
 augroup END
 
@@ -929,9 +975,9 @@ noremap <silent> <leader>te
   " \ :lcd! ~/OneDrive/Documents/My\ Code\<CR>
 tnoremap <silent> <leader>s <C-\><C-n>:Startify<CR>
 
-tnoremap <leader>[ <C-\><C-n>
-tnoremap <leader>v <C-\><C-N>"*pi
-tnoremap <leader>p <C-\><C-N>""pi
+tnoremap <silent> <leader>[ <C-\><C-n>
+tnoremap <silent> <leader>v <C-\><C-N>"*pi
+tnoremap <silent> <leader>p <C-\><C-N>""pi
 
 " replicate window movement commands
 tnoremap <C-J> <C-\><C-n><C-W><C-J>
@@ -944,29 +990,21 @@ tnoremap <C-Up> <C-\><C-n>:res -5<CR>
 tnoremap <C-Down> <C-\><C-n>:res +5<CR>
 
 " replicate buffer commands
-tnoremap <leader>o <C-\><C-n><C-w>o
-tnoremap <leader>c <C-\><C-n>:close<CR>
-tnoremap <leader>bc <C-\><C-n>:bd!<CR>
-tnoremap <leader><tab> <C-\><C-n>:bnext<CR>
-tnoremap <leader><S-tab> <C-\><C-n>:bprev<CR>
-tnoremap <leader><C-tab> <C-\><C-n>:buffer<space><tab>
+tnoremap <silent> <leader>o <C-\><C-n><C-w>o
+tnoremap <silent> <leader>c <C-\><C-n>:close<CR>
+tnoremap <silent> <leader>bc <C-\><C-n>:bd!<CR>
+tnoremap <silent> <leader><tab> <C-\><C-n>:bnext<CR>
+tnoremap <silent> <leader><S-tab> <C-\><C-n>:bprev<CR>
+" tnoremap <silent> <leader><C-tab> <C-\><C-n>:buffer<space><tab>
+tnoremap <silent> <leader><C-tab> <C-\><C-n>:Buffers<CR>
 
 au BufEnter * if &buftype == 'terminal' | :startinsert | endif
 
 " }}}
 " Coc Mappings {{{2
 
-" inoremap <silent><expr> <TAB>
-"       \ pumvisible() ? "\<C-n>" :
-"       \ <SID>check_back_space() ? "\<TAB>" :
-"       \ coc#refresh()
-" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-" inoremap <M-CR> <CR>
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
- " use <c-space>for trigger completion
-imap <c-space> coc#refresh()
+" ensure <CR> always creates newline
+inoremap <silent><expr> <CR> pumvisible() ? "\<C-y><CR>" : "\<C-g>u\<CR>"
 
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
