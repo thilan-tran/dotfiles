@@ -35,9 +35,8 @@
   Plug 'justinmk/vim-syntax-extra'
   Plug 'pangloss/vim-javascript'
   Plug 'mxw/vim-jsx'
-  Plug 'kh3phr3n/python-syntax'
+  Plug 'pfdevilliers/Pretty-Vim-Python'
 
-  " modeline and startup
   Plug 'itchyny/lightline.vim'
   Plug 'mengelbrecht/lightline-bufferline'
   Plug 'mhinz/vim-startify'
@@ -81,6 +80,7 @@
   Plug 'tpope/vim-surround'
   Plug 'bkad/CamelCaseMotion'
   Plug 'kkoenig/wimproved.vim'
+  Plug 'tmhedberg/SimpylFold'
 
 call plug#end()
 
@@ -91,12 +91,16 @@ call plug#end()
 
   augroup my-highlighting
     autocmd!
+
     " misc
-    autocmd ColorScheme * highlight Comment cterm=italic gui=italic
+    " autocmd ColorScheme * highlight Comment cterm=italic gui=italic
+    " autocmd ColorScheme * highlight jsFuncArgs cterm=italic gui=italic
+    " autocmd ColorScheme * highlight pythonParameters cterm=italic gui=italic
     autocmd ColorScheme * highlight MatchParen cterm=bold gui=bold
     autocmd ColorScheme * highlight SpellLocal ctermfg=none guifg=none
     autocmd ColorScheme * highlight SpellRare ctermfg=none guifg=none
     autocmd ColorScheme * highlight SpellCap ctermfg=none guifg=none
+
     " yellow
     autocmd ColorScheme * highlight cIncluded ctermfg=yellow guifg=#E5C07B
     autocmd ColorScheme * highlight cBraces ctermfg=yellow guifg=#E5C07B
@@ -154,6 +158,7 @@ call plug#end()
     " markdown
     autocmd ColorScheme * highlight htmlItalic cterm=italic ctermfg=yellow gui=italic guifg=#E5C07B
     autocmd ColorScheme * highlight htmlBold cterm=bold ctermfg=magenta gui=bold guifg=#C678DD
+    autocmd ColorScheme * highlight htmlBoldItalic cterm=bold,italic ctermfg=magenta gui=bold,italic guifg=#C678DD
     autocmd ColorScheme * highlight htmlH1 cterm=bold ctermfg=blue gui=bold guifg=#61AFEF
 
     " todo
@@ -180,7 +185,7 @@ call plug#end()
 
   syntax on
   set background=dark
-  colorscheme onedark
+  colorscheme custom_onedark
 
 " }}}
 " Vim Settings {{{2
@@ -205,6 +210,7 @@ call plug#end()
   set cursorline
   set ruler
   set signcolumn=yes
+  set backupcopy=yes
 
   set noshowmode
   set laststatus=2
@@ -276,6 +282,13 @@ call plug#end()
     autocmd FileType help setlocal nomodeline
   augroup END
 
+  augroup python
+      autocmd!
+      autocmd FileType python
+                  \   syn keyword pythonSelf self
+                  \ | highlight def link pythonSelf pythonInclude
+  augroup end
+
   " c, cpp, python, javascript
   "fix :: indent in c
   augroup Coding
@@ -293,6 +306,7 @@ call plug#end()
   let g:cpp_member_variable_highlight = 1
   let g:cpp_class_decl_highlight = 1
   let python_self_cls_highlight = 1
+  " let python_no_parameter_highlight = 0
 
   augroup Editing
     autocmd!
@@ -304,6 +318,10 @@ call plug#end()
     " autocmd BufRead,BufNewFile *.txt setlocal spell spelllang=en_us
     autocmd BufRead,BufNewFile *.txt setlocal textwidth=80
     autocmd BufRead,BufNewFile *.txt setlocal colorcolumn=80
+
+    " autoexpand math in Pandoc
+    autocmd FileType markdown inoremap <buffer> $ $$<Left>
+    autocmd FileType markdown inoremap <buffer> <M-$> $
 
     " table mode
     autocmd FileType markdown inoremap <buffer> <C-b> <C-o>:TableModeToggle<CR>
@@ -766,13 +784,11 @@ inoremap [ []<Left>
 inoremap [; [];<Left><Left>
 
 inoremap {<CR> {<CR>}<C-c>O
+inoremap {;<CR> {<CR>};<C-c>O
 
 inoremap } {}
 inoremap { {}<Left>
 inoremap {; {};<Left><Left>
-
-inoremap {<CR> {<CR>}<C-c>O
-inoremap {;<CR> {<CR>};<C-c>O
 
 inoremap /* /*<Tab>*/<Left><Left><Left>
 
@@ -889,6 +905,10 @@ noremap <leader>] :YcmCompleter GoTo<CR>
 " paste from system clipboard
 noremap <leader>P "*P
 noremap <leader>p "*p
+
+" yank to system clipboard
+vnoremap <leader>y "*y
+nnoremap <leader>y "*yy
 
 " fold/unfold
 " noremap <leader>u zA
