@@ -1,123 +1,101 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+# Thilan Tran 2020
+#                   __
+#     .-----.-----.|  |--.----.----.
+#   __|-- __|__ --||     |   _|  __|
+#  |__|_____|_____||__|__|__| |____|
+#
+# ==================================
 
-# Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
-# fpath=( "$HOME/.zfunctions" $fpath)
+# oh-my-zsh plugins
+# -----------------
+export ZSH="/home/thilan/.oh-my-zsh"
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-# ZSH_THEME="elessar"
-ZSH_THEME="spaceship"
-SPACESHIP_PROMPT_ORDER=(
-  time
-  user
-  host
-  dir
-  git
-  char
-)
-SPACESHIP_PROMPT_SEPARATE_LINE=false
-SPACESHIP_PROMPT_ADD_NEWLINE=false
-SPACESHIP_VI_MODE_INSERT="\e[6 q"
-SPACESHIP_VI_MODE_NORMAL="\e[2 q"
-SPACESHIP_DIR_TRUNC=1
-# ZSH_THEME="robbyrussell"
+ZSH_THEME='elessar'
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS=true
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(
-  git
-  colored-man-pages
-)
+plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
-eval `dircolors ~/.dircolors`
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# vi-mode keybinds and prompt
+# ---------------------------
+bindkey -v
+bindkey '^P' up-history
+bindkey '^N' down-history
+bindkey '^?' backward-delete-char
+bindkey '^h' backward-delete-char
+bindkey '^w' backward-kill-word
+bindkey '^r' history-incremental-search-backward
+bindkey '^[l' clear-screen
 
-alias t="env TERM=screen-256color tmux"
+# custom vi-mode prompt indicator
+precmd() { RPROMPT="" }
+function zle-line-init zle-keymap-select {
+   VIM_PROMPT="%{$fg_bold[yellow]%} [% NORMAL]%  %{$reset_color%}"
+   RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/} $EPS1"
+   zle reset-prompt
+}
 
-# User configuration
+zle -N zle-line-init
+zle -N zle-keymap-select
+export KEYTIMEOUT=1
 
-# export MANPATH="/usr/local/man:$MANPATH"
+# bash stuff
+# ----------
+if [ -f ~/.bash_aliases ]; then
+  source ~/.bash_aliases
+fi
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+if [ -f ~/.bash_functions ]; then
+  source ~/.bash_functions
+fi
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+# fzf configuration
+# -----------------
+if [ -f ~/.fzf.zsh ]; then
+  source ~/.fzf.zsh
+fi
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+# use ripgrep for faster searching
+export FZF_DEFAULT_COMMAND="rg --files --hidden"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+# base16 color scheme
+export FZF_DEFAULT_OPTS="
+    --color fg:-1,bg:-1,hl:4,fg+:253,bg+:0,hl+:4
+    --color info:4,prompt:2,spinner:1,pointer:1,marker:1
+"
+
+# shell variables
+# ---------------
+export MNT="/mnt/c/Users/Thilan"
+export DOCUMENTS="$MNT/Documents"
+export CODE="$DOCUMENTS/code"
+export COURSEWORK="$DOCUMENTS/code/coursework"
+export PROJECTS="$DOCUMENTS/code/projects"
+export DOCKER_HOST=tcp://localhost:2375
+
+# custom ls colors
+# ----------------
+LS_COLORS=""
+
+# white files by default
+LS_COLORS=$LS_COLORS:'ex=0:fi=0;37'
+
+# blue directories
+LS_COLORS=$LS_COLORS:'di=1;34:ow=1;34:st=1;34:tw=1;34'
+
+# green source files
+LS_COLORS=$LS_COLORS:'*.c=0;32:*.cpp=0;32:*.h=0;32:*.js=0;32:*.py=0;32:*.sh=0;32:*.ml=0;32'
+
+# yellow text files
+LS_COLORS=$LS_COLORS:'*.txt=0;33:*.md=0;33:*README=0;33:*LICENSE=0;33:*.log=0;33:*.info=0;33'
+
+# magenta image files
+LS_COLORS=$LS_COLORS:'*.jpg=0;35:*.png=0;35:*.pdf=0;35:*.ppm=0;35'
+
+# cyan compressed files
+LS_COLORS=$LS_COLORS:'*.gz=0;36:*.tar=0;36:*.tgz=0;36:*.zip=0;36'
+
+export LS_COLORS
+
+# use ls colors for zsh completion
+zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
