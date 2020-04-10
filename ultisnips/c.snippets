@@ -2,23 +2,24 @@ snippet def "#define" bA
 #define $1
 endsnippet
 
+snippet inc "#define" bA
+#include $1
+endsnippet
+
 snippet if "if-statement" bA
-if (${1:/* condition */})
-{
+if (${1:/* condition */}) {
 	${VISUAL}$0
 }
 endsnippet
 
 snippet elif "else-if-statement" bA
-else if (${1:/* condition */})
-{
+else if (${1:/* condition */}) {
 	${VISUAL}$0
 }
 endsnippet
 
-snippet el "else-statement" bA
-else
-{
+snippet els "else-statement" bA
+else {
 	${VISUAL}$0
 }
 endsnippet
@@ -28,8 +29,7 @@ ${1:/* condition */} ? ${2:a} : ${3:b}
 endsnippet
 
 snippet switch "switch-case" bA
-switch (${1:/* variable */})
-{
+switch (${1:/* variable */}) {
 		case ${2:/* variable case */}:
 			${3}
 			${4:break;}${5}
@@ -39,46 +39,40 @@ switch (${1:/* variable */})
 endsnippet
 
 snippet for "for loop" bA
-for (int ${2:k} = 0; $2 < ${1:count}; ${3:$2++})
-{
+for (int ${2:i} = 0; $2 < ${1:count}; ${3:$2++}) {
 	${VISUAL}$0
 }
 endsnippet
 
 snippet whi "while" bA
-while (${1:/* condition */})
-{
+while (${1:/* condition */}) {
 	${VISUAL}$0
 }
 endsnippet
 
 snippet dow "do-while" bA
-do
-{
+do {
 	${VISUAL}$0
 } while (${1:/* condition */});
 endsnippet
 
 snippet struct "struct" bA
-struct ${1:/* name */}
-{
+struct ${1:/* name */} {
 	$0
 };
 endsnippet
 
 snippet funct "function" bA
-${3:/* type */} ${1:/* name */}($2)
-{
+${3:/* type */} ${1:/* name */}($2) {
 	${VISUAL}$0
 }
 endsnippet
 
 snippet cFunct "class-function" bA
-${4:/* type */} ${1:`!p snip.rv = snip.basename or "/* class */"`}::${2:/* name */}($3)
-{
+${4:/* type */} ${1:`!p snip.rv = snip.basename or "/* class */"`}::${2:/* name */}($3) {
 	${VISUAL}$0
 }
-endsnippet	
+endsnippet
 
 snippet tem "template"
 template <typename ${1:ItemType}>
@@ -96,7 +90,7 @@ snippet doxFile "doxygen-file" bA
  * @file ${1:name}
  *
  * @brief ${2:descrip.}
- * 
+ *
  * $5
  */
 $0

@@ -7,17 +7,17 @@ endif
 runtime colors/onedark.vim
 let g:colors_name = "custom_onedark"
 
-let s:red = "#e06c75"
-let s:dark_red = "#be5046"
-let s:green = "#98c379"
-let s:yellow = "#e5c07b"
-let s:dark_yellow = "#d19a66"
-let s:blue = "#61afef"
-let s:purple = "#c678dd"
-let s:cyan = "#56b6c2"
+let s:red = ["#e06c75", "1"]
+let s:dark_red = ["#be5046", "9"]
+let s:green = ["#98c379", "2"]
+let s:yellow = ["#e5c07b", "3"]
+let s:dark_yellow = ["#d19a66", "11"]
+let s:blue = ["#61afef", "4"]
+let s:purple = ["#c678dd", "5"]
+let s:cyan = ["#56b6c2", "6"]
 
 function! s:color(group, ...)
-  let histring = 'hi ' . a:group . ' guifg=' . a:1
+  let histring = 'hi ' . a:group . ' guifg=' . a:1[0] . ' ctermfg=' . a:1[1]
   execute histring
 endfunction
 
@@ -75,6 +75,6 @@ call s:color("xmlTagName", s:blue)
 call s:color("xmlEqual", s:red)
 
 " italics
-highlight Comment cterm=italic gui=italic
+" highlight Comment cterm=italic gui=italic
 highlight jsFuncArgs cterm=italic gui=italic
 highlight pythonParameters cterm=italic gui=italic
