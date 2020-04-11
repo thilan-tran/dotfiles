@@ -1,14 +1,19 @@
-" folding markdown
+" markdown.vim
+" ============
+" custom behavior for markdown files
+
+" custom folding of headers
+" -------------------------
 function! MarkdownFold()
   let line = getline(v:lnum)
 
-  " Regular headers
+  " regular headers
   let depth = match(line, '\(^#\+\)\@<=\( .*$\)\@=')
   if depth > 0
     return ">" . depth
   endif
 
-  " Setext style headings
+  " setext-styled headings
   let prevline = getline(v:lnum - 1)
   let nextline = getline(v:lnum + 1)
   if (line =~ '^.\+$') && (nextline =~ '^=\+$') && (prevline =~ '^\s*$')
@@ -19,7 +24,7 @@ function! MarkdownFold()
     return ">2"
   endif
 
-  " frontmatter
+  " auto fold frontmatter
   if (v:lnum == 1) && (line =~ '^----*$')
 	  return ">2"
   endif

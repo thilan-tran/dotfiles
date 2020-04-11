@@ -1,12 +1,17 @@
+" custom_onedark.vim
+" ==================
+" extend onedark with custom highlighting
+
 hi clear
 if exists("syntax_on")
   syntax reset
 endif
 
-" extend onedark
 runtime colors/onedark.vim
 let g:colors_name = "custom_onedark"
 
+" onedark colors
+" --------------
 let s:red = ["#e06c75", "1"]
 let s:dark_red = ["#be5046", "9"]
 let s:green = ["#98c379", "2"]
@@ -20,6 +25,9 @@ function! s:color(group, ...)
   let histring = 'hi ' . a:group . ' guifg=' . a:1[0] . ' ctermfg=' . a:1[1]
   execute histring
 endfunction
+
+" updated colors per filetype
+" ---------------------------
 
 " general
 call s:color("String", s:yellow)

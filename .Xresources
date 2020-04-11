@@ -2,7 +2,7 @@
 ! ===========
 ! centralized color schemes
 
-#include ~/.colors/onedark
+#include "/home/thilan/.colors/onedark"
 
 ! set colors
 ! ----------
