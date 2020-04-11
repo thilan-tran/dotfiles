@@ -52,6 +52,9 @@ Plug 'justinmk/vim-dirvish'
 " git
 " Plug 'airblade/vim-gitgutter'
 
+" tmux
+Plug 'christoomey/vim-tmux-navigator'
+
 " color schemes
 Plug 'chriskempson/base16-vim'
 Plug 'joshdick/onedark.vim'
@@ -202,7 +205,7 @@ let g:onedark_terminal_italics=1
 colorscheme custom_onedark
 
 " }}}
-" Vim Settings {{{2
+" General Settings {{{2
 
 " autochdir alternative for Dirvish
 autocmd! BufEnter * silent! lcd %:p:h
@@ -276,20 +279,19 @@ set foldlevelstart=1
 set foldtext=GetFoldText() " custom fold text
 
 " fix autofold lag after completion
-augroup Fix-Folds
+augroup FixFolds
   autocmd!
   autocmd InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
   " autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
-augroup END
+augroup end
 
 " }}}
 " Filetype Settings {{{2
 
-
 augroup Misc
   autocmd!
   autocmd BufWritePre * call <SID>StripWhitespace()
-augroup END
+augroup end
 
 augroup Help
   autocmd!
@@ -328,7 +330,7 @@ augroup CStyle
 
   autocmd FileType c,cpp,javascript setlocal commentstring=//\ %s
   " autocmd FileType c,cpp,javascript setlocal commentstring=/*\ %s\ */
-augroup END
+augroup end
 
 augroup Markdown
   autocmd!
@@ -842,10 +844,12 @@ augroup MarkdownCompilation
   autocmd FileType markdown nmap <buffer> <silent> <C-s>
         \ :echo "Compiling pdf..."<CR>
         \ :StartAsyncLog pandoc.exe %:t --pdf-engine=xelatex --listings -o %:t:r.pdf<CR>
+        " \ :StartAsyncLog pandoc %:p --pdf-engine=xelatex --listings -o %:p:h/%:t:r.pdf<CR>
 
   " open pdf viewer
   autocmd FileType markdown,pdf nnoremap <buffer> <silent> <leader>v
         \ :silent !cmd.exe /c start /b SumatraPDF -reuse-instance %:t:r.pdf<CR>
+        " \ :silent !start /b SumatraPDF -reuse-instance %:p:h/%:t:r.pdf<CR>
 augroup end
 
 " }}}
