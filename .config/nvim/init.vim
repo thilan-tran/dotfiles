@@ -9,7 +9,7 @@
 "
 " ==================================================================
 
-" gVim & nvim {{{2
+" gVim & nvim {{{1
 
 " custom font and other gVim options
 if (has('gui_running'))
@@ -24,7 +24,7 @@ endif
 set rtp+=~/.config/nvim/
 
 " }}}
-" Plugged {{{2
+" Plugged {{{1
 
 call plug#begin('~/vimfiles/plugged')
 
@@ -63,8 +63,13 @@ Plug 'joshdick/onedark.vim'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'justinmk/vim-syntax-extra'
 Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'maxmellon/vim-jsx-pretty'
+" Plug 'mxw/vim-jsx'
+" Plug 'leafgarland/typescript-vim'
 Plug 'pfdevilliers/Pretty-Vim-Python'
+
+Plug 'uiiaoo/java-syntax.vim'
 
 " statusline
 Plug 'itchyny/lightline.vim'
@@ -81,8 +86,9 @@ Plug 'junegunn/goyo.vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-dispatch'       " allows for async make
 Plug 'bkad/CamelCaseMotion'
-Plug 'tmhedberg/SimpylFold'     " much faster folding
+" Plug 'tmhedberg/SimpylFold'     " much faster folding
 Plug 'psliwka/vim-smoothie'     " smooth scroll
 Plug 'godlygeek/tabular'        " text alignment
 Plug 'bruno-/vim-vertical-move' " vertical movement in visual modes
@@ -90,7 +96,7 @@ Plug 'bruno-/vim-vertical-move' " vertical movement in visual modes
 call plug#end()
 
 " }}}
-" Colors {{{2
+" Colors {{{1
 
 " Custom Highlighting {{{
 
@@ -129,10 +135,13 @@ augroup end
 
 augroup MiscColors
   autocmd!
-  autocmd ColorScheme * highlight MatchParen cterm=bold gui=bold
+  autocmd ColorScheme * highlight MatchParen cterm=bold gui=bold ctermfg=blue guifg=#61AFEF
   autocmd ColorScheme * highlight Cursor ctermfg=white guibg=#ABB2BF
   autocmd ColorScheme * highlight pythonExtraOperator ctermfg=red guifg=#E06C75
   autocmd ColorScheme * highlight doxygenBOther ctermfg=grey guifg=#5C6370
+
+  " too much
+  autocmd ColorScheme * highlight link JavaIdentifier NONE
 
   " autocmd ColorScheme * highlight Comment cterm=italic gui=italic
   " autocmd ColorScheme * highlight jsFuncArgs cterm=italic gui=italic
@@ -179,13 +188,18 @@ augroup MarkdownColors
   autocmd ColorScheme * highlight htmlItalic     ctermfg=yellow  guifg=#E5C07B cterm=italic      gui=italic
   autocmd ColorScheme * highlight htmlBold       ctermfg=magenta guifg=#C678DD cterm=bold        gui=bold
   autocmd ColorScheme * highlight htmlH1         ctermfg=blue    guifg=#61AFEF cterm=bold        gui=bold
+  autocmd ColorScheme * highlight htmlH2         ctermfg=blue    guifg=#61AFEF cterm=bold        gui=bold
+  autocmd ColorScheme * highlight htmlH3         ctermfg=blue    guifg=#61AFEF cterm=bold        gui=bold
+  autocmd ColorScheme * highlight htmlH4         ctermfg=blue    guifg=#61AFEF cterm=bold        gui=bold
   autocmd ColorScheme * highlight mkdLink        ctermfg=blue    guifg=#61AFEF
+  autocmd ColorScheme * highlight mkdHeading     ctermfg=none    guifg=#FFFFFF
 augroup end
 
 " custom .todo filetype
 augroup TodoColors
   autocmd!
   autocmd ColorScheme * highlight def link todoDone Comment
+  autocmd ColorScheme * highlight def link todoFolds Comment
   autocmd ColorScheme * highlight todoHeading  ctermfg=blue   guifg=#61AFEF cterm=bold   gui=bold
   autocmd ColorScheme * highlight todoDates    ctermfg=yellow guifg=#E5C07B cterm=italic gui=italic
   autocmd ColorScheme * highlight todoTag      ctermfg=red    guifg=#E06C75
@@ -205,7 +219,7 @@ let g:onedark_terminal_italics=1
 colorscheme custom_onedark
 
 " }}}
-" General Settings {{{2
+" General Settings {{{1
 
 " autochdir alternative for Dirvish
 autocmd! BufEnter * silent! lcd %:p:h
@@ -225,9 +239,11 @@ set lazyredraw
 set autoread
 set nobackup
 set noswapfile
+" set makeprg=make\ %<
 
 " numbers and lines
 set relativenumber
+set number
 set cursorline
 set ruler
 set signcolumn=yes
@@ -272,10 +288,11 @@ set concealcursor=nv " modes to conceal text
 " format options
 set formatoptions+=t " autowrap by textwidth
 set formatoptions-=l " autowrap long lines
-set formatoptions-=o " no auto insert comments
+set formatoptions-=o " no auto insert comments on o/O
+set formatoptions-=r " no auto insert comments on CR
 
 " folding options
-set foldlevelstart=1
+set foldlevelstart=0
 set foldtext=GetFoldText() " custom fold text
 
 " fix autofold lag after completion
@@ -286,11 +303,12 @@ augroup FixFolds
 augroup end
 
 " }}}
-" Filetype Settings {{{2
+" Filetype Settings {{{1
 
 augroup Misc
   autocmd!
   autocmd BufWritePre * call <SID>StripWhitespace()
+  autocmd FileType * set formatoptions-=o "ugh
 augroup end
 
 augroup Help
@@ -298,9 +316,21 @@ augroup Help
   autocmd FileType help setlocal nomodeline
 augroup end
 
+augroup QuickFix
+    autocmd!
+    " auto open quickfix
+    autocmd QuickFixCmdPost [^l]* cwindow
+    autocmd QuickFixCmdPost l*    lwindow
+augroup end
+
 augroup Vim
   autocmd!
   autocmd FileType vim setlocal foldmethod=marker
+augroup end
+
+augroup Startify
+  autocmd!
+  autocmd FileType startify setlocal nowrap
 augroup end
 
 augroup Python
@@ -308,8 +338,9 @@ augroup Python
     autocmd FileType python " highlight self
           \ syn keyword pythonSelf self
           \ | highlight def link pythonSelf pythonInclude
-    autocmd FileType python set softtabstop=4
-    autocmd FileType python set shiftwidth=4
+    autocmd FileType python setlocal softtabstop=4
+    autocmd FileType python setlocal shiftwidth=4
+    autocmd FileType python setlocal nofoldenable
 augroup end
 
 " language highlighting options
@@ -326,15 +357,28 @@ augroup CStyle
   autocmd FileType c,cpp,javascript setlocal nofoldenable
 
   " auto expand /* */ comments
-  autocmd FileType c,cpp,javascript inoremap /* /*<Tab>*/<C-g>U<Left><C-g>U<Left><C-g>U<Left>
+  autocmd FileType c,cpp,java,javascript inoremap /* /*<Tab>*/<C-g>U<Left><C-g>U<Left><C-g>U<Left>
 
-  autocmd FileType c,cpp,javascript setlocal commentstring=//\ %s
+  autocmd FileType c,cpp,java,javascript,typescript setlocal commentstring=//\ %s
   " autocmd FileType c,cpp,javascript setlocal commentstring=/*\ %s\ */
 augroup end
 
 augroup Markdown
   autocmd!
   autocmd BufReadPost,BufNewFile *.md,*.markdown set filetype=markdown
+
+  " compile to pdf
+  " autocmd FileType markdown nnoremap <buffer> <C-s>
+  "       \ :Make %:t:r.pdf<CR>
+  autocmd FileType markdown nnoremap <buffer> <C-s>
+        \ :Dispatch md2pdf.sh %:p -wsl<CR>
+
+  " open pdf viewer
+  " autocmd FileType markdown,pdf nnoremap <buffer> <leader>v
+  "       \ :Make view-%:t:r<CR>
+  autocmd FileType markdown,pdf nnoremap <buffer> <leader>v
+        \ :Dispatch $PSHELL -Command SumatraPDF -reuse-instance %:t:r.pdf<CR>
+        " \ :Dispatch cmd.exe /c start /b SumatraPDF -reuse-instance %:t:r.pdf<CR>
 
   " autoexpand math in Pandoc
   autocmd FileType markdown inoremap <buffer> $ $$<C-g>U<Left>
@@ -363,17 +407,26 @@ augroup Text
     " autocmd FileType text imap <buffer> <C-S-CR> <CR><CR><C-o>gq{
 augroup end
 
-" custom .todo filetype
+" custom todo filetype
 augroup Todo
   autocmd!
   autocmd BufRead *.todo set filetype=todo
 
-  autocmd FileType todo set noautoindent
-  autocmd FileType todo :NoMatchParen " no bracket highlighting
+  autocmd FileType todo setlocal noautoindent
+  autocmd FileType todo setlocal foldmethod=marker " fold completed tasks
 
-  " delete or check off completed
+  " uncomment to delete completed tasks
+  " autocmd FileType todo nmap <buffer> <silent> <C-s>
+  "       \ :g/\[x\]/d<CR>
+
+  " shift indentation, and move completed tasks to end
   autocmd FileType todo nmap <buffer> <silent> <C-s>
-        \ :g/\[x\]/d<CR>
+        \ ma
+        \ :%s:\v.*(\[x\]):\1:e<CR>
+        \ :g:\[x\]:m$<CR>
+        \ gg`a
+
+  " check completed tasks
   autocmd FileType todo nmap <buffer> <CR> :call checkbox#ToggleCB()<CR>
 
   " auto start lines with [ ] or -
@@ -384,21 +437,28 @@ augroup Todo
   autocmd FileType todo nnoremap <buffer> <C-o> o
 
   " syntax matching
-  autocmd FileType todo syntax match todoHeading "^[A-Z].*"
-  autocmd FileType todo syntax match todoTag "\v\+\w*"
-  autocmd FileType todo syntax match todoDates "\v \zs\w*\ze \|"
+  autocmd FileType todo syntax match todoHeading "^[A-Z][^{]*"
+  autocmd FileType todo syntax match todoTag "\v\+(\w|-)*"
+  " autocmd FileType todo syntax match todoDates "\v((\[.])=|\-)\zs.{-}\ze\s*\|"
+  autocmd FileType todo syntax match todoDates "\v(-|\[.])\zs[^\[\]]{-}\ze\s*\|"
   autocmd FileType todo syntax match todoProgress contains=todoDates ".*\[\-\].*"
   autocmd FileType todo syntax match todoDone ".*\[x\].*"
   autocmd FileType todo syntax match todoHigh "\v\(A\)"
   autocmd FileType todo syntax match todoMed "\v\(B\)"
   autocmd FileType todo syntax match todoLow "\v\(C\)"
+  " autocmd FileType todo syntax match todoCheckbox "\[\ \]" conceal cchar=
+  " autocmd FileType todo syntax match todoCheckbox "\[x\]" conceal cchar=✅
+
+  " hide folds
+  autocmd FileType todo syntax match todoFolds "{{{.*" conceal
+  autocmd FileType todo syntax match todoFolds "}}}" conceal
 augroup end
 
 " }}}
-" Plugin Settings {{{2
+" Plugin Settings {{{1
 
 " Checkbox
-let g:checkbox_states = [' ', '-', 'x']
+let g:checkbox_states = [' ', 'x']
 
 " Clang Format
 let g:clang_format#style_options = {
@@ -418,18 +478,19 @@ let g:clang_format#style_options = {
  \ "ReflowComments" : "true" }
 
 " Dirvish
+" sort directories first
 " let g:dirvish_mode = ':sort | sort ,^.*[^\\]$, r | silent keeppatterns g/\vnode_modules|\\\.[^\\]+/d _'
 let g:dirvish_mode = ':sort ,^.*/,'
 
 " FZF
+" use rg for faster searching
 let $FZF_DEFAULT_COMMAND = 'rg --files'
+" full window fzf preview
 let g:fzf_layout = { 'window': '-tabnew' }
-
 " custom Files command with preview
 command! -bang -nargs=? -complete=dir Files
   \ call fzf#vim#files(<q-args>, {'options': ['--preview', 'bat -p --color always {}']}, <bang>0)
-
-" hide status in fzf
+" hide status in fzf preview
 autocmd! FileType fzf
 autocmd  FileType fzf set laststatus=0 noshowmode noruler norelativenumber
   \ | autocmd BufLeave <buffer> set laststatus=2 noshowmode ruler relativenumber
@@ -461,24 +522,19 @@ let g:lightline.component_type = {
       \     'cocWarnings': 'warning',
       \     'cocOK': 'left'
       \ }
-
 " detailed statusline
 " let g:lightline.active = { 'right': [ ['lineinfo'], ['percent'],
 "       \                               ['cocErrors', 'cocWarnings', 'cocOK'],
 "       \                               ['fileformat', 'fileencoding', 'filetype', 'time'] ],
 "       \                    'left': [ ['mode', 'paste'],
 "       \                              ['gitbranch', 'readonly', 'filename', 'modified'] ] }
-
-
 " minimal statusline
 let g:lightline.active = {
-      \  'right': [ ['cocErrors', 'cocWarnings', 'cocOK'], ['filetype', 'percent'] ],
+      \  'right': [ ['percent'], ['filetype'] ],
       \  'left':  [ ['mode', 'paste'],
       \             ['readonly', 'filename', 'modified'] ] }
-
 " update lightline on diagnostic change
 autocmd User CocDiagnosticChange call lightline#update()
-
 " show bufferline at top
 set showtabline=2
 let g:lightline.tabline          = {'left': [['buffers']]}
@@ -497,13 +553,13 @@ let g:gitgutter_sign_modified = '\ ~'
 let g:gitgutter_sign_removed = '\ -'
 
 " Vim Markdown
+let g:markdown_folding = 1
 let g:vim_markdown_toc_autofit = 1
 let g:vim_markdown_new_list_item_indent = 0
 let g:vim_markdown_math = 1
 let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_folding_disabled = 1
-let g:markdown_folding = 1
-let g:vim_markdown_fenced_languages = ['c++=cpp', 'py=python', 'js=javascript']
+let g:vim_markdown_fenced_languages = ['c++=cpp', 'py=python', 'js=javascript', 'java']
 
 " Startify
 let g:startify_enable_special = 0
@@ -512,7 +568,11 @@ let g:startify_change_to_dir = 0
 let g:startify_padding_left = 3
 let g:startify_session_dir = session_dir
 let g:startify_lists = [ { 'type': 'files' }, { 'type': 'sessions' }, { 'type': 'bookmarks' } ]
-let g:startify_bookmarks = [ {'c': '$MYVIMRC'}, {'w': '$DOCUMENTS/wiki/README.md'}, {'t': '$DOCUMENTS/wiki/tasks.todo'} ]
+let g:startify_bookmarks = [
+      \{'c': '$MYVIMRC'},
+      \{'l': '$DOCUMENTS/wiki/my_lists.md'},
+      \{'t': '$DOCUMENTS/wiki/tasks.todo'},
+      \{'w': '$DOCUMENTS/wiki/README.md'} ]
 let g:startify_custom_header = [
           \ ' ',
           \ '                                             ',
@@ -526,7 +586,7 @@ let g:startify_custom_header = [
           \ ]
 
 " UltiSnips
-let g:UltiSnipsSnippetDirectories = ['~/dotfiles/ultisnips']
+let g:UltiSnipsSnippetDirectories = ['~/dotfiles/.config/ultisnips']
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 let g:ulti_expand_or_jump_res = 0
@@ -537,7 +597,15 @@ let g:vista_sidebar_position = 'vertical topleft'
 let g:vista_echo_cursor = 0
 
 " }}}
-" Functions {{{2
+" Functions {{{1
+
+" start jobs in nvim
+command! -nargs=1 -complete=file
+      \ StartAsync call jobstart(expand(<f-args>))
+command! -nargs=1 -complete=file
+      \ StartAsyncLog call jobstart(expand(<f-args>), {
+      \ 'on_exit': { j,d,e ->
+      \ execute('echo "command finished with status '.d.'"', '')}})
 
 " auto delete matching pair
 function! s:DeleteMatchingPair()
@@ -635,7 +703,7 @@ endfunction
 
 " }}}
 
-" Mappings {{{2
+" Mappings {{{1
 
 let mapleader = ";"
 
@@ -643,7 +711,12 @@ let mapleader = ";"
 nnoremap , ;
 nnoremap ;, ,
 
-" Editing {{{3
+" quick repeat last macro
+nnoremap Q @@
+" yank consistency
+nnoremap Y y$
+
+" Editing {{{
 
 " colonize (TODO: fix functionality in terminal vim)
 inoremap <S-CR> <C-o>A;
@@ -653,8 +726,8 @@ inoremap <C-CR> <C-o>A;<CR>
 nnoremap <silent> c<Tab> :let @/=expand('<cword>')<CR>cgn
 
 " quick substitution
-nnoremap gs :s///g<Left><Left><Left>
-nnoremap gS :%s///gc<Left><Left><Left><Left>
+nnoremap gs :s:::g<Left><Left><Left>
+nnoremap gS :%s:::gc<Left><Left><Left><Left>
 
 " stay in Visual mode when using shift commands
 xnoremap < <gv
@@ -703,7 +776,7 @@ inoremap <M-"> "
 inoremap <M-`> `
 
 " }}}
-" Movement {{{3
+" Movement {{{
 
 " mimic vinegar
 nnoremap <silent> - :Dirvish<CR>
@@ -711,9 +784,10 @@ nnoremap <silent> - :Dirvish<CR>
 " previous buffer
 nnoremap <BS> :e#<CR>
 
-" wrap j and k
+" wrap j, k, and $
 nmap j gj
 nmap k gk
+nmap $ g$
 
 " window movement
 nnoremap <C-j> <C-w><C-j>
@@ -739,21 +813,21 @@ sunmap b
 sunmap e
 sunmap ge
 
-" M-hjkl for alternate arrows in gVim
-noremap ë <Up>
-noremap ê <Down>
-noremap è <Left>
-noremap ì <Right>
-inoremap ë <Up>
-inoremap ê <Down>
-inoremap è <Left>
-inoremap ì <Right>
-cnoremap ë <Up>
-cnoremap ê <Down>
-cnoremap è <Left>
-cnoremap ì <Right>
+" uncomment for M-hjkl as alternate arrows in gVim
+" noremap ë <Up>
+" noremap ê <Down>
+" noremap è <Left>
+" noremap ì <Right>
+" inoremap ë <Up>
+" inoremap ê <Down>
+" inoremap è <Left>
+" inoremap ì <Right>
+" cnoremap ë <Up>
+" cnoremap ê <Down>
+" cnoremap è <Left>
+" cnoremap ì <Right>
 
-" M-hjkl for alternate arrows in terminal vim
+" uncomment for M-hjkl as alternate arrows in terminal vim
 noremap <M-k> <Up>
 noremap <M-j> <Down>
 noremap <M-l> <Right>
@@ -768,17 +842,19 @@ cnoremap <M-l> <Right>
 cnoremap <M-h> <Left>
 
 " }}}
-" Leader Mappings {{{3
+" Leader Mappings {{{
 
 noremap <silent> <leader>s :Startify<CR>
 noremap <silent> <leader>rc :edit $MYVIMRC<CR>
 noremap <silent> <leader>cc :CocConfig<CR>
 noremap <leader>so :source $MYVIMRC<CR>
 
-noremap <silent> <leader>e :Files<CR>
+noremap <silent> <leader>e :Files $DOCUMENTS<CR>
+noremap <silent> <leader>f :Files .<CR>
 noremap <silent> <leader>o <C-w>o
 noremap <silent> <leader>w :w!<CR>
 noremap <silent> <leader>c :close<CR>
+noremap <silent> <leader>cl :cclose<CR>
 noremap <silent> <leader>q :qa<CR>
 
 " buffers
@@ -813,7 +889,7 @@ nmap <silent> <leader>k <Plug>(coc-diagnostic-prev)
 nmap <silent> <leader>j <Plug>(coc-diagnostic-next)
 
 " }}}
-" Other {{{3
+" Other {{{
 
 " vertical help
 cabbrev vh vert help
@@ -830,32 +906,12 @@ noremap <leader>r :call ToggleFullscreen()<CR>
 " check syntax highlight
 nnoremap <leader>sy :call SynStack()<CR>
 
-" start jobs in nvim
-command! -nargs=1 -complete=file
-      \ StartAsync call jobstart(expand(<f-args>))
-command! -nargs=1 -complete=file
-      \ StartAsyncLog call jobstart(expand(<f-args>), {
-      \ 'on_exit': { j,d,e ->
-      \ execute('echo "command finished with status '.d.'"', '')}})
-
-augroup MarkdownCompilation
-  autocmd!
-  " pandoc pdf compilation
-  autocmd FileType markdown nmap <buffer> <silent> <C-s>
-        \ :echo "Compiling pdf..."<CR>
-        \ :StartAsyncLog pandoc.exe %:t --pdf-engine=xelatex --listings -o %:t:r.pdf<CR>
-        " \ :StartAsyncLog pandoc %:p --pdf-engine=xelatex --listings -o %:p:h/%:t:r.pdf<CR>
-
-  " open pdf viewer
-  autocmd FileType markdown,pdf nnoremap <buffer> <silent> <leader>v
-        \ :silent !cmd.exe /c start /b SumatraPDF -reuse-instance %:t:r.pdf<CR>
-        " \ :silent !start /b SumatraPDF -reuse-instance %:p:h/%:t:r.pdf<CR>
-augroup end
-
+" quick make
+nmap <C-s> :Make<CR>
 " }}}
 
 " }}}
-" Terminal {{{2
+" Terminal {{{1
 
 " automatically focus into terminal buffer
 autocmd BufEnter * if &buftype == 'terminal' | :startinsert | endif
@@ -892,7 +948,7 @@ tnoremap <silent> <leader><Tab> <C-\><C-n>:bnext<CR>
 tnoremap <silent> <leader><S-Tab> <C-\><C-n>:bprev<CR>
 
 " }}}
-" Coc Mappings {{{2
+" Coc Mappings {{{1
 
 " <CR> always newline, only expand with <C-y>
 inoremap <silent><expr> <CR> "\<C-g>u\<CR>"

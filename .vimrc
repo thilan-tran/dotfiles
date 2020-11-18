@@ -9,7 +9,7 @@
 "
 " ==================================================================
 
-" General Settings {{{2
+" General Settings {{{1
 
 " sessions
 let g:session_dir = '~/vimfiles/sessions'
@@ -82,7 +82,7 @@ set formatoptions-=l " autowrap long lines
 set formatoptions-=o " no auto insert comments
 
 " }}}
-" Filetype Settings {{{2
+" Filetype Settings {{{1
 
 augroup Misc
   autocmd!
@@ -141,7 +141,7 @@ augroup Text
 augroup end
 
 " }}}
-" Functions {{{2
+" Functions {{{1
 
 " auto delete matching pair
 function! s:DeleteMatchingPair()
@@ -172,7 +172,7 @@ function! s:StripWhitespace()
 endfunction
 
 " }}}
-" Mappings {{{2
+" Mappings {{{1
 
 let mapleader = ";"
 
@@ -180,7 +180,7 @@ let mapleader = ";"
 nnoremap , ;
 nnoremap ;, ,
 
-" Editing {{{3
+" Editing {{{2
 
 " colonize (TODO: fix functionality in terminal vim)
 inoremap <S-CR> <C-o>A;
@@ -240,7 +240,7 @@ inoremap <M-"> "
 inoremap <M-`> `
 
 " }}}
-" Movement {{{3
+" Movement {{{2
 
 " mimic vinegar
 nnoremap <silent> - :Explore<CR>
@@ -295,7 +295,7 @@ cnoremap <M-l> <Right>
 cnoremap <M-h> <Left>
 
 " }}}
-" Leader Mappings {{{3
+" Leader Mappings {{{2
 
 noremap <silent> <leader>rc :edit $MYVIMRC<CR>
 noremap <leader>so :source $MYVIMRC<CR>
@@ -330,7 +330,7 @@ noremap <leader>fn mz]s1z=`z
 noremap <leader>fp mz[s1z=`z
 
 " }}}
-" Other {{{3
+" Other {{{2
 
 " vertical help
 cabbrev vh vert help
@@ -344,7 +344,7 @@ execute 'nnoremap <leader>ss :mks! ' . g:session_dir . '/*.vim<C-d><Left><Left><
 " }}}
 
 " }}}
-" Terminal {{{2
+" Terminal {{{1
 
 " automatically focus into terminal buffer
 autocmd BufEnter * if &buftype == 'terminal' | :startinsert | endif

@@ -1,5 +1,15 @@
 {
-  "coc.preferences.formatOnSaveFiletypes": ["css", "html", "javascript", "typescript", "typescriptreact", "json", "javascriptreact"],
+  "coc.preferences.formatOnSaveFiletypes": [
+    "css",
+    "scss",
+    "html",
+    "javascript",
+    "typescript",
+    "typescriptreact",
+    "javascriptreact",
+    "json",
+    "python"
+  ],
   "coc.preferences.extensionUpdateCheck": "never",
   "coc.preferences.messageLevel": "error",
 
@@ -18,17 +28,17 @@
    }
   },
 
-  "prettier.arrowParens": "always",
-  "prettier.printWidth": 80,
-  "prettier.proseWrap": "preserve",
-  "prettier.singleQuote": true,
-  "prettier.trailingComma": "none",
+  "eslint.autoFixOnSave": true,
 
-  "javascript.suggestionActions.enabled": false,
+  "javascript.validate.enable": false,
+  "typescript.validate.enable": true,
 
   "html.filetypes": [
     "javascript",
     "html"
   ],
-  "html.format.enable": true
+  "html.format.enable": true,
+
+  "snippets.userSnippetsDirectory": "~/dotfiles/.config/ultisnips/",
+  "java.errors.incompleteClasspath.severity": "ignore"
 }

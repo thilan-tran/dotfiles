@@ -1,93 +1,43 @@
-snippet deffront "default-frontmatter" b
+snippet shortfront "short-frontmatter" b
 ---
-title: "$1"
-subtitle: "$2"
-date: "$3"
-mainfont: Bariol
-fontsize: 14pt
-geometry: margin=2cm
-toc: true
-documentclass: extarticle
-header-includes: |
-  \hypersetup{colorlinks=true,linkcolor=black,urlcolor=myblue}
-  \usepackage{fancyhdr}
-  \pagestyle{fancy}
-  \usepackage{microtype}
----
-$0
-endsnippet
-snippet codefront "frontmatter-with-code" b
----
-title: "$1"
-subtitle: "$2"
-date: "$3"
+#YAML Frontmatter
 mainfont: Libertinus Serif
 monofont: Iosevka
 fontsize: 14pt
-geometry: margin=2cm
+documentclass: extarticle
+header-includes: |
+  \definecolor{Light}{HTML}{F4F4F4}
+  \let\oldtexttt\texttt
+  \renewcommand{\texttt}[1]{
+    \colorbox{Light}{\oldtexttt{#1}}
+  }
+---
+
+$0
+endsnippet
+
+snippet deffront "default-frontmatter" b
+---
+#YAML Frontmatter
+title: "$1"
+subtitle: "$2"
+date: "$3"
+author: "$4"
+mainfont: Libertinus Serif
+monofont: Iosevka
+fontsize: 14pt
 toc: true
 documentclass: extarticle
 header-includes: |
-  \hypersetup{colorlinks=true,linkcolor=black,urlcolor=myblue}
+  \definecolor{Light}{HTML}{F4F4F4}
+  \let\oldtexttt\texttt
+  \renewcommand{\texttt}[1]{
+    \colorbox{Light}{\oldtexttt{#1}}
+  }
   \usepackage{fancyhdr}
   \pagestyle{fancy}
-  \usepackage{fvextra}
-  \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\\\\{\\}}
-  \usepackage{xcolor}
-  \definecolor{mygray}{HTML}{A6A5A2}
-  \definecolor{mygreen}{HTML}{98C379}
-  \definecolor{myblue}{HTML}{61AFEF}
-  \definecolor{mycyan}{HTML}{56B6C2}
-  \definecolor{myorange}{HTML}{E5C07B}
-  \definecolor{myred}{HTML}{E06C75}
-  \definecolor{mypurple}{HTML}{AE81FF}
-	\usepackage{caption}
-  \usepackage{listings}
-  \lstset{
-  language=c++,
-  basicstyle=\ttfamily,
-  commentstyle=\color{mygray}\textit,
-  keywordstyle=\color{mycyan}\bfseries,
-  identifierstyle=\color{mygreen},
-  stringstyle=\color{myorange},
-  directivestyle=\color{mypurple},
-  numberstyle=\small\color{mygray},
-  rulecolor=\color{mygray},
-  captionpos=t,
-  title=\lstname,
-  columns=fullflexible,
-  lineskip=2pt,
-  breakatwhitespace=false,
-  breaklines=true,
-  extendedchars=true,
-  keepspaces=true,
-  showspaces=false,
-  showtabs=false,
-  tabsize=2,
-  frame=trbL,
-  numbersep=9pt,
-  stepnumber=2,
-  literate=%
-    {0}{{{\color{mypurple}0}}}1
-    {1}{{{\color{mypurple}1}}}1
-    {2}{{{\color{mypurple}2}}}1
-    {3}{{{\color{mypurple}3}}}1
-    {4}{{{\color{mypurple}4}}}1
-    {5}{{{\color{mypurple}5}}}1
-    {6}{{{\color{mypurple}6}}}1
-    {7}{{{\color{mypurple}7}}}1
-    {8}{{{\color{mypurple}8}}}1
-    {9}{{{\color{mypurple}9}}}1
-    {+}{{{\color{myred}+}}}1
-    {-}{{{\color{myred}-}}}1
-    {>}{{{\color{myred}>}}}1
-    {<}{{{\color{myred}<}}}1
-    {=}{{{\color{myred}=}}}1
-    {\ *\ }{{{\color{myred}\ *\ }}}1
-    {\ /\ }{{{\color{myred}\ /\ }}}1,
-  backgroundcolor=\color{gray!10}}
-  \usepackage{microtype}
 ---
+
 $0
 endsnippet
 
@@ -154,4 +104,12 @@ snippet eqt "latex-equation" bA
 \begin{equation}
 	$0
 \end{equation}
+endsnippet
+
+snippet txi "latex-textit" A
+\textit{$1}$0
+endsnippet
+
+snippet frc "latex-fraction" A
+\frac{$1}{$2}$0
 endsnippet

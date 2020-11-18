@@ -13,7 +13,7 @@ if [ -f ~/.bash_aliases ]; then
 fi
 
 if [ -f ~/.bash_functions ]; then
-  source ~/.bash_aliases
+  source ~/.bash_functions
 fi
 
 # fzf configuration
@@ -34,11 +34,14 @@ export FZF_DEFAULT_OPTS="
 # shell variables
 # ---------------
 export MNT="/mnt/c/Users/Thilan"
-export DOCUMENTS="$MNT/Documents"
+export PSHELL="/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"
+export DOCUMENTS="/home/thilan/documents"
 export CODE="$DOCUMENTS/code"
 export COURSEWORK="$DOCUMENTS/code/coursework"
 export PROJECTS="$DOCUMENTS/code/projects"
 export DOCKER_HOST=tcp://localhost:2375
+export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
 
 # custom ls colors
 # ----------------
@@ -46,20 +49,19 @@ LS_COLORS=""
 
 # white files by default
 LS_COLORS=$LS_COLORS:'ex=0:fi=0;37'
-
 # blue directories
 LS_COLORS=$LS_COLORS:'di=1;34:ow=1;34:st=1;34:tw=1;34'
-
 # green source files
 LS_COLORS=$LS_COLORS:'*.c=0;32:*.cpp=0;32:*.h=0;32:*.js=0;32:*.py=0;32:*.sh=0;32:*.ml=0;32'
-
 # yellow text files
 LS_COLORS=$LS_COLORS:'*.txt=0;33:*.md=0;33:*README=0;33:*LICENSE=0;33:*.log=0;33:*.info=0;33'
-
 # magenta image files
 LS_COLORS=$LS_COLORS:'*.jpg=0;35:*.png=0;35:*.pdf=0;35:*.ppm=0;35'
-
 # cyan compressed files
 LS_COLORS=$LS_COLORS:'*.gz=0;36:*.tar=0;36:*.tgz=0;36:*.zip=0;36'
 
 export LS_COLORS
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
