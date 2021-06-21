@@ -14,3 +14,6 @@ alias t='tmux'
 # by default, open nvim with startify and tasks
 alias vi='nvim_default'
 alias vim='nvim_default'
+
+# WSL2 stuff
+alias jpybook="jupyter notebook --no-browser --ip `ip addr | grep eth0 | grep inet | awk '{print $2}' | cut -d\"/\" -f1`"

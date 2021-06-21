@@ -7,11 +7,7 @@
 # by default, open nvim with startify and tasks
 function nvim_default() {
   if [ $# -eq 0 ]; then
-    if [ -n "$TMUX" ]; then
-      nvim -c "cd $DOCUMENTS"
-    else
-      nvim -c "cd $DOCUMENTS | Startify | vsplit $DOCUMENTS/wiki/tasks.todo"
-    fi
+    nvim -c "cd $DOCUMENTS | Startify | vsplit $DOCUMENTS/wiki/tasks.todo"
   else
     nvim "$@"
   fi

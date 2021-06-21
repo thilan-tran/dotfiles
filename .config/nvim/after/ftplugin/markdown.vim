@@ -31,3 +31,5 @@ function! MarkdownFold()
 
   return "="
 endfunction
+
+set foldtext=GetFoldText() " custom fold text

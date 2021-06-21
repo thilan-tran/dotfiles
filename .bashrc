@@ -39,7 +39,7 @@ export DOCUMENTS="/home/thilan/documents"
 export CODE="$DOCUMENTS/code"
 export COURSEWORK="$DOCUMENTS/code/coursework"
 export PROJECTS="$DOCUMENTS/code/projects"
-export DOCKER_HOST=tcp://localhost:2375
+# export DOCKER_HOST=tcp://localhost:2375
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 

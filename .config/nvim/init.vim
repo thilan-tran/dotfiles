@@ -65,11 +65,10 @@ Plug 'justinmk/vim-syntax-extra'
 Plug 'pangloss/vim-javascript'
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'maxmellon/vim-jsx-pretty'
-" Plug 'mxw/vim-jsx'
-" Plug 'leafgarland/typescript-vim'
+Plug 'mxw/vim-jsx'
 Plug 'pfdevilliers/Pretty-Vim-Python'
-
 Plug 'uiiaoo/java-syntax.vim'
+" Plug 'leafgarland/typescript-vim'
 
 " statusline
 Plug 'itchyny/lightline.vim'
@@ -88,10 +87,14 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-dispatch'       " allows for async make
 Plug 'bkad/CamelCaseMotion'
-" Plug 'tmhedberg/SimpylFold'     " much faster folding
+Plug 'tmhedberg/SimpylFold'     " much faster folding
 Plug 'psliwka/vim-smoothie'     " smooth scroll
 Plug 'godlygeek/tabular'        " text alignment
 Plug 'bruno-/vim-vertical-move' " vertical movement in visual modes
+
+" testing new plugins
+" Plug 'kevinhwang91/nvim-bqf'
+" Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 call plug#end()
 
@@ -249,8 +252,8 @@ set ruler
 set signcolumn=yes
 
 " tabs and indent
-set softtabstop=2
-set shiftwidth=2
+set softtabstop=4
+set shiftwidth=4
 set expandtab
 set smarttab
 set autoindent
@@ -353,13 +356,13 @@ augroup CStyle
   autocmd!
   autocmd FileType c,cpp setlocal cinoptions+=L0 " fix :: indent in C
 
-  autocmd FileType c,cpp ClangFormatAutoEnable
+  " autocmd FileType c,cpp ClangFormatAutoEnable
   autocmd FileType c,cpp,javascript setlocal nofoldenable
 
   " auto expand /* */ comments
-  autocmd FileType c,cpp,java,javascript inoremap /* /*<Tab>*/<C-g>U<Left><C-g>U<Left><C-g>U<Left>
+  autocmd FileType c,cpp,java,javascript inoremap /* /*<Space><Space>*/<C-g>U<Left><C-g>U<Left><C-g>U<Left>
 
-  autocmd FileType c,cpp,java,javascript,typescript setlocal commentstring=//\ %s
+  autocmd FileType c,cpp,java,javascript,typescript,typescriptreact setlocal commentstring=//\ %s
   " autocmd FileType c,cpp,javascript setlocal commentstring=/*\ %s\ */
 augroup end
 
@@ -371,13 +374,17 @@ augroup Markdown
   " autocmd FileType markdown nnoremap <buffer> <C-s>
   "       \ :Make %:t:r.pdf<CR>
   autocmd FileType markdown nnoremap <buffer> <C-s>
-        \ :Dispatch md2pdf.sh %:p -wsl<CR>
+        \ :Dispatch! md2pdf.sh %:p --wsl<CR>
+
+  " safe compile to pdf with errors
+  autocmd FileType markdown nnoremap <buffer> <leader>sc
+        \ :Dispatch md2pdf.sh %:p --wsl<CR>
 
   " open pdf viewer
   " autocmd FileType markdown,pdf nnoremap <buffer> <leader>v
   "       \ :Make view-%:t:r<CR>
   autocmd FileType markdown,pdf nnoremap <buffer> <leader>v
-        \ :Dispatch $PSHELL -Command SumatraPDF -reuse-instance %:t:r.pdf<CR>
+        \ :Dispatch! $PSHELL -Command SumatraPDF -reuse-instance %:t:r.pdf<CR>
         " \ :Dispatch cmd.exe /c start /b SumatraPDF -reuse-instance %:t:r.pdf<CR>
 
   " autoexpand math in Pandoc
@@ -430,11 +437,10 @@ augroup Todo
   autocmd FileType todo nmap <buffer> <CR> :call checkbox#ToggleCB()<CR>
 
   " auto start lines with [ ] or -
-  autocmd FileType todo inoremap <buffer> <CR> <CR>[ ]<Tab>
-  autocmd FileType todo inoremap <buffer> <S-CR> <CR><Tab>-<Tab>
+  autocmd FileType todo inoremap <buffer> <CR> <CR>[ ]<Space>
+  autocmd FileType todo inoremap <buffer> <S-CR> <CR><Tab>-<Space>
   autocmd FileType todo nnoremap <buffer> o o[ ]<Tab>
-  autocmd FileType todo nnoremap <buffer> <S-o> o<Tab>-<Tab>
-  autocmd FileType todo nnoremap <buffer> <C-o> o
+  autocmd FileType todo nnoremap <buffer> <S-o> o<Tab>-<Space>
 
   " syntax matching
   autocmd FileType todo syntax match todoHeading "^[A-Z][^{]*"
@@ -490,6 +496,10 @@ let g:fzf_layout = { 'window': '-tabnew' }
 " custom Files command with preview
 command! -bang -nargs=? -complete=dir Files
   \ call fzf#vim#files(<q-args>, {'options': ['--preview', 'bat -p --color always {}']}, <bang>0)
+" custom quick Find command
+command! -bang -nargs=* Find
+  \ call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --follow --hidden --glob "!{.git/*,*.lock}" --color "always" -- ' .
+  \ shellescape(<q-args>), 1, fzf#vim#with_preview(), <bang>0)
 " hide status in fzf preview
 autocmd! FileType fzf
 autocmd  FileType fzf set laststatus=0 noshowmode noruler norelativenumber
@@ -556,6 +566,7 @@ let g:gitgutter_sign_removed = '\ -'
 let g:markdown_folding = 1
 let g:vim_markdown_toc_autofit = 1
 let g:vim_markdown_new_list_item_indent = 0
+let g:vim_markdown_strikethrough = 1
 let g:vim_markdown_math = 1
 let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_folding_disabled = 1
@@ -570,7 +581,7 @@ let g:startify_session_dir = session_dir
 let g:startify_lists = [ { 'type': 'files' }, { 'type': 'sessions' }, { 'type': 'bookmarks' } ]
 let g:startify_bookmarks = [
       \{'c': '$MYVIMRC'},
-      \{'l': '$DOCUMENTS/wiki/my_lists.md'},
+      \{'l': '$DOCUMENTS/wiki/lists.md'},
       \{'t': '$DOCUMENTS/wiki/tasks.todo'},
       \{'w': '$DOCUMENTS/wiki/README.md'} ]
 let g:startify_custom_header = [
@@ -729,6 +740,10 @@ nnoremap <silent> c<Tab> :let @/=expand('<cword>')<CR>cgn
 nnoremap gs :s:::g<Left><Left><Left>
 nnoremap gS :%s:::gc<Left><Left><Left><Left>
 
+" quick find
+nnoremap gf :Find<CR>
+" nnoremap gf :vimgrep::*<Left><Left>
+
 " stay in Visual mode when using shift commands
 xnoremap < <gv
 xnoremap > >gv
@@ -844,18 +859,27 @@ cnoremap <M-h> <Left>
 " }}}
 " Leader Mappings {{{
 
+" globals
 noremap <silent> <leader>s :Startify<CR>
 noremap <silent> <leader>rc :edit $MYVIMRC<CR>
 noremap <silent> <leader>cc :CocConfig<CR>
 noremap <leader>so :source $MYVIMRC<CR>
 
+" exploration
 noremap <silent> <leader>e :Files $DOCUMENTS<CR>
 noremap <silent> <leader>f :Files .<CR>
+
+" windows
 noremap <silent> <leader>o <C-w>o
 noremap <silent> <leader>w :w!<CR>
 noremap <silent> <leader>c :close<CR>
 noremap <silent> <leader>cl :cclose<CR>
 noremap <silent> <leader>q :qa<CR>
+
+" quickfix
+noremap <silent> <leader>cp :cprev<CR>
+noremap <silent> <leader>cn :cnext<CR>
+noremap <silent> <leader>ce :cexpr []<CR>
 
 " buffers
 noremap <silent> <leader>; :Buffers<CR>

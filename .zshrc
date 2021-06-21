@@ -12,7 +12,7 @@ export ZSH="/home/thilan/.oh-my-zsh"
 
 ZSH_THEME='elessar'
 
-plugins=(git nvm)
+plugins=(git ssh-agent)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -72,8 +72,8 @@ export DOCUMENTS="/home/thilan/documents"
 export CODE="$DOCUMENTS/code"
 export COURSEWORK="$DOCUMENTS/code/coursework"
 export PROJECTS="$DOCUMENTS/code/projects"
-export DOCKER_HOST=tcp://localhost:2375
-export PATH="$HOME/bin:$PATH"
+# export DOCKER_HOST=tcp://localhost:2375
+export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 
 # custom ls colors
 # ----------------
@@ -96,6 +96,9 @@ export LS_COLORS
 
 # use ls colors for zsh completion
 zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
+
+# startup
+# -------
 
 # uncomment to print task dashboard on startup
 # if [ -z "$TMUX" ]; then

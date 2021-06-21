@@ -6,11 +6,11 @@ monofont: Iosevka
 fontsize: 14pt
 documentclass: extarticle
 header-includes: |
-  \definecolor{Light}{HTML}{F4F4F4}
-  \let\oldtexttt\texttt
-  \renewcommand{\texttt}[1]{
-    \colorbox{Light}{\oldtexttt{#1}}
-  }
+    \definecolor{Light}{HTML}{F4F4F4}
+    \let\oldtexttt\texttt
+    \renewcommand{\texttt}[1]{
+	\colorbox{Light}{\oldtexttt{#1}}
+    }
 ---
 
 $0
@@ -29,13 +29,13 @@ fontsize: 14pt
 toc: true
 documentclass: extarticle
 header-includes: |
-  \definecolor{Light}{HTML}{F4F4F4}
-  \let\oldtexttt\texttt
-  \renewcommand{\texttt}[1]{
-    \colorbox{Light}{\oldtexttt{#1}}
-  }
-  \usepackage{fancyhdr}
-  \pagestyle{fancy}
+    \definecolor{Light}{HTML}{F4F4F4}
+    \let\oldtexttt\texttt
+    \renewcommand{\texttt}[1]{
+	\colorbox{Light}{\oldtexttt{#1}}
+    }
+    \usepackage{fancyhdr}
+    \pagestyle{fancy}
 ---
 
 $0
@@ -47,11 +47,10 @@ endsnippet
 
 snippet pbr "page-break" bA
 \newpage{}
-$0
 endsnippet
 
 snippet -_ "dunder" A
-__$0__
+__$1__$0
 endsnippet
 
 snippet _ "italics" A
@@ -71,21 +70,13 @@ snippet lnk "link" A
 endsnippet
 
 snippet cmt "c-style-comment" A
-/* ${1:comment} */
-$0
+/* ${1:comment} */$0
 endsnippet
 
 snippet cbk "code-block" bA
-\`\`\`${1:c++}
-${0:${VISUAL}}
-\`\`\`
-endsnippet
-
-snippet cbl "code-block with label" bA
-\captionof{lstlisting}{${2:title}}
-\`\`\`${1:c++}
-${0:${VISUAL}}
-\`\`\`
+\`\`\`${1:c}
+${2:${VISUAL}}
+\`\`\`$0
 endsnippet
 
 snippet refl "reference-link"
@@ -100,16 +91,20 @@ snippet foot "footnote"
 [^$1]:${2:text}
 endsnippet
 
-snippet eqt "latex-equation" bA
-\begin{equation}
-	$0
-\end{equation}
+snippet lxb "latex-block" bA
+\begin{$1}
+    $2
+\end{$1}$0
 endsnippet
 
-snippet txi "latex-textit" A
+snippet bmat "latex-bmatrix" A
+\begin{bmatrix} $1 \end{bmatrix}$0
+endsnippet
+
+snippet txi "latex-textit" iA
 \textit{$1}$0
 endsnippet
 
-snippet frc "latex-fraction" A
+snippet frc "latex-fraction" iA
 \frac{$1}{$2}$0
 endsnippet
