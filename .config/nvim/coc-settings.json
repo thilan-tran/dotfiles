@@ -1,48 +1,59 @@
 {
-  "coc.preferences.formatOnSaveFiletypes": [
-    "css",
-    "scss",
-    "html",
-    "javascript",
-    "typescript",
-    "typescriptreact",
-    "javascriptreact",
-    "json",
-    "python"
-  ],
-  "coc.preferences.extensionUpdateCheck": "never",
-  "coc.preferences.messageLevel": "error",
+    "coc.preferences.formatOnSaveFiletypes": [
+        "css",
+        "scss",
+        "html",
+        "javascript",
+        "typescript",
+        "javascript.jsx",
+        "typescript.tsx",
+        "typescriptreact",
+        "javascriptreact",
+        "json",
+        "python"
+    ],
+    "coc.preferences.extensionUpdateCheck": "never",
+    "coc.preferences.messageLevel": "error",
 
-  "suggest.echodocSupport": true,
-  "suggest.maxCompleteItemCount": 20,
-  "suggest.noselect": false,
-  "diagnostic.errorSign": "_X",
-  "diagnostic.infoSign": "_!",
-  "diagnostic.warningSign": "_W",
+    "suggest.echodocSupport": true,
+    "suggest.maxCompleteItemCount": 20,
+    "suggest.noselect": false,
+    "diagnostic.errorSign": "_X",
+    "diagnostic.infoSign": "_!",
+    "diagnostic.warningSign": "_W",
 
-  "languageserver":{
-   "clangd": {
-     "command": "clangd",
-     "rootPatterns": ["compile_flags.txt", "compile_commands.json", ".vim/", ".git/", ".hg/"],
-     "filetypes": ["c", "cpp", "objc", "objcpp"]
-   }
-  },
+    "languageserver": {
+        "clangd": {
+            "command": "clangd",
+            "rootPatterns": [
+                "compile_flags.txt",
+                "compile_commands.json",
+                ".vim/",
+                ".git/",
+                ".hg/"
+            ],
+            "filetypes": ["c", "cpp", "objc", "objcpp"]
+        }
+    },
 
-  "eslint.autoFixOnSave": true,
+    "eslint.autoFixOnSave": true,
+    "eslint.format.enable": true,
 
-  "javascript.validate.enable": false,
-  "typescript.validate.enable": true,
-  "javascript.format.enabled": false,
-  "typescript.format.enabled": false,
+    "prettier.eslintIntegration": true,
+    "prettier.tabWidth": 4,
+    "prettier.singleQuote": true,
+    "prettier.trailingComma": "es5",
 
-  "html.filetypes": [
-    "javascript",
-    "html"
-  ],
-  "html.format.enable": true,
+    "javascript.validate.enable": true,
+    "typescript.validate.enable": true,
+    "javascript.format.enabled": true,
+    "typescript.format.enabled": true,
 
-  "snippets.userSnippetsDirectory": "~/dotfiles/.config/ultisnips/",
-  "java.errors.incompleteClasspath.severity": "ignore",
+    "html.filetypes": ["javascript", "html"],
+    "html.format.enable": true,
 
-  "python.formatting.autopep8args": []
+    "snippets.userSnippetsDirectory": "~/dotfiles/.config/ultisnips/",
+    "java.errors.incompleteClasspath.severity": "ignore",
+
+    "python.formatting.autopep8args": []
 }
